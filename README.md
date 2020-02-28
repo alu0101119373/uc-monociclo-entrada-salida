@@ -57,7 +57,7 @@ Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 
 
 ![Palabra para instrucción de la ALU](./img/palALU.png)
 
-## Microinstrucciones implementadas<a name="microinstruccionesImplementadas"></a>
+## Microinstrucciones implementadas<a name="microInstrucciones"></a>
 
 Las instrucciones implementadas actualmente se representan en la siguiente tabla:
 
