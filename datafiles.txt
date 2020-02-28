@@ -1,0 +1,5 @@
+componentes.v
+alu.v
+memprog.v
+cd.v
+uc.v
