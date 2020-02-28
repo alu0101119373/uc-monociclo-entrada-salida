@@ -10,7 +10,7 @@ El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implem
 - Posee una memoria de programa con un máximo de 1024 instrucciones. Esto implica que el programa que se desee ejecutar debe tener un máximo de 1024 instrucciones.
 - El camino de datos de esta CPU es el siguiente:
 
-!(Camino de datos de la CPU monociclo base)[./img/cdCPUBase.png]
+![Camino de datos de la CPU monociclo base](./img/cdCPUBase.png)
 
 ## Mejoras
 
@@ -38,15 +38,15 @@ Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 
 
 - Instrucciones para salto:
 
-!(Palabra para instrucción de salto)[./img/palSalto.png]
+![Palabra para instrucción de salto](./img/palSalto.png)
 
 - Instrucciones para carga inmediata
 
-!(Palabra para instrucción de carga)[./img/palLoad.png]
+![Palabra para instrucción de carga](./img/palLoad.png)
 
 - Instrucciones para operaciones aritmético-lógica.
 
-!(Palabra para instrucción de la ALU)[./img/palALU.png]
+![Palabra para instrucción de la ALU](./img/palALU.png)
 
 ## Microinstrucciones implementadas
 
