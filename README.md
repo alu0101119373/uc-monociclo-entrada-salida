@@ -93,3 +93,48 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **NSOP**         | 0111   | Niega el segundo operando                 |
 
 Como se puede observar, el repertorio de instrucciones de salto y de carga inmediata puede ser ampliado.
+
+## Ejemplo del funcionamiento de la CPU monociclo base
+
+Este ejemplo corresponde a la CPU base solicitada para la práctica.
+
+El código que se ejecuta en la prueba es el siguiente:
+
+### Código en C++
+```C
+
+	int main (void) {
+		int sum = 0;
+
+		for (int i = 0; i != 4; i++) {
+			sum += (10 - i) + 1;
+		}
+	}
+
+```
+
+### Código en microinstrucciones de nuestra CPU monociclo
+| DIR     | CÓDIGO CON ETIQUETAS | CÓDIGO EN BINARIO       |
+| :-----: | :------------------- | :---------------------: |
+| **0**   | **LOAD** 0, R1       | **1000** 0000 0000 0001 |
+| **1**   | **LOAD** 10, R2      | **1000** 0000 1010 0010 |
+| **2**   | **LOAD** 0, R3       | **1000** 0000 0000 0011 |
+| **3**   | **LOAD** 4, R7       | **1000** 0000 0100 0111 |
+| **4**   | **SUB** R2, R3, R4   | **0011** 0010 0011 0100 |
+| **5**   | **LOAD** 1, R5       | **1000** 0000 0001 0101 |
+| **6**   | **ADD** R4, R5, R5   | **0010** 0100 0101 0101 |
+| **7**   | **ADD** R5, R1, R1   | **0010** 0101 0001 0001 |
+| **8**   | **LOAD** 1, R5       | **1000** 0000 0001 0101 |
+| **9**   | **ADD** R3, R5, R3   | **0010** 0011 0101 0011 |
+| **10**  | **SUB** R7, R3, R8   | **0011** 0111 0011 1000 |
+| **11**  | **JNZ** 4            | **1000 10**00 0000 0100 |
+| **12**  | **ADD** R1, R0, R1   | **0010** 0001 0000 0001 |
+
+**NOTAS**:
+- El OPCODE viene destacado en negrita.
+- La última instrucción se realiza para que el resultado de la suma se refleje en la salida de la ALU, pudiéndose ver en el GTKWave. El resultado de la variable `sum` es 38.
+
+### Resultado del GTKWave
+Como se puede observar en la captura de pantalla, se realiza un salto entre la instrucción en la dirección 11 y la 4. Esto ocurre hasta el final, en el cual acaba sumando la variable `sum` con 0, de forma que el resultado de la suma acabe en la salida de la ALU.
+
+![Resultado en GTKWave](./img/gtkwave_ejemplo_base.png)
