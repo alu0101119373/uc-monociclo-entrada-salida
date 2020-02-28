@@ -1,6 +1,15 @@
 # PRÁCTICA 2: Diseño de una CPU monociclo
 
-## Objetivo
+## Índice
+
+1. [Objetivo](#objetivo)
+2. [Mejoras](#mejoras)
+3. [Compilación](#compilacion)
+4. [Formato de palabra](#formatoPalabra)
+5. [Microinstrucciones Implementadas](#microInstrucciones)
+6. [Ejemplo del funcionamiento de la CPU monociclo base](#funcionamientoCPU)
+
+## Objetivo<a name="objetivo"></a>
 
 El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implementarse mejoras a la misma. En concreto, esta CPU posee las siguientes características:
 
@@ -12,11 +21,11 @@ El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implem
 
 ![Camino de datos de la CPU monociclo base](./img/cdCPUBase.png)
 
-## Mejoras
+## Mejoras<a name="mejoras"></a>
 
 Por ahora no se ha realizado ninguna mejora de esta CPU.
 
-## Compilación
+## Compilación<a name="compilacion"></a>
 
 Para compilar el proyecto, se debe situar la terminal en la raíz del mismo y ejecutar el siguiente comando:
 
@@ -32,7 +41,7 @@ Este comando compilará el proyecto y generará el fichero `cpu.out`. Para poder
 
 Para poner a prueba esta CPU monociclo, **el programa debe ser escrito en el fichero progfile.dat**, en binario y siguiendo el formato de palabra indicado.
 
-## Formato de palabra
+## Formato de palabra<a name="formatoPalabra"></a>
 
 Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 instrucciones. El formato para cada instrucción es el siguiente:
 
@@ -48,7 +57,7 @@ Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 
 
 ![Palabra para instrucción de la ALU](./img/palALU.png)
 
-## Microinstrucciones implementadas
+## Microinstrucciones implementadas<a name="microinstruccionesImplementadas"></a>
 
 Las instrucciones implementadas actualmente se representan en la siguiente tabla:
 
@@ -94,7 +103,7 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 
 Como se puede observar, el repertorio de instrucciones de salto y de carga inmediata puede ser ampliado.
 
-## Ejemplo del funcionamiento de la CPU monociclo base
+## Ejemplo del funcionamiento de la CPU monociclo base<a name="funcionamientoCPU"></a>
 
 Este ejemplo corresponde a la CPU base solicitada para la práctica.
 
