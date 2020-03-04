@@ -28,7 +28,7 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 - Pila: Se ha dispuesto una pila exclusiva para realizar subrutinas. De esta forma, esta pila interna en la CPU es capaz de guardar la posición siguiente en la dirección del PC con el objetivo de recuperarla posteriormente. Para ello, se dispone de dos nuevas instrucciones: `PUSH` y `POP`. Pese a pertenecer a la codificación de los saltos, estas instrucciones no requieren de ningún dato adicional más all
 á del OPCODE. Aquí disponemos una imagen con detalles sobre la implementación de la misma:
 
-![Plantilla Mejora Pila](./img/plantillaPila.jpg)
+![Plantilla Mejora Pila](./img/platillaPila.jpg)
 
 ## Compilación<a name="compilacion"></a>
 
