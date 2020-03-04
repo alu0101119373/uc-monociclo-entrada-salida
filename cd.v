@@ -5,7 +5,7 @@ module cd(input wire clk, reset, s_inc, s_inm, we3, wez, input wire [2:0] op_alu
     // Program counter
     wire [9:0] e_pc, s_pc;
 
-    registro#(10) pc(clk, reset, e_pc, s_pc);
+    registro#(10) pc(clk, reset, 1'b1, e_pc, s_pc);
 
     // Calculo de la entrada del pc
     wire [9:0] s_sumador;
