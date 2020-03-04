@@ -24,6 +24,7 @@ UNIQUE = ["PUSH", "POP", "SKIP"]
 COMPLEX = ["BEQ", "BNE", "BGT", "BGE", "BLT", "BLE"]
 
 REGISTER = {
+    "R0": "0000",
     "R1": "0001",
     "R2": "0010",
     "R3": "0011",

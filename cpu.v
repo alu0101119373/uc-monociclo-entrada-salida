@@ -10,6 +10,6 @@ wire [5:0] opcode;
 cd datapath(clk, reset, s_inc, s_inm, we3, wez, wesp, push, pop, opalu, s_z, opcode);
 
 // Unidad de control
-uc u(opcode, s_z, s_inc, s_inm, we3, wez, wesp, push, pop, opalu);
+uc u(clk, opcode, s_z, s_inc, s_inm, we3, wez, wesp, push, pop, opalu);
 
 endmodule

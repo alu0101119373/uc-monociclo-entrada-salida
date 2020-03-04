@@ -3,3 +3,6 @@ alu.v
 memprog.v
 cd.v
 uc.v
+pila.v
+mempila.v
+sumrest.v
