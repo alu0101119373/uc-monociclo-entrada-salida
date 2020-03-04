@@ -8,16 +8,14 @@ module cd(input wire clk, reset, s_inc, s_inm, we3, wez, wesp, push, pop, input 
     registro#(10) pc(clk, reset, 1'b1, e_pc, s_pc);
 
     // Pila
-    wire [9:0] s_pila;
+    wire [9:0] s_pila, s_sumador_pc;
 
-    pila stack(clk, reset, wesp, push, pop, s_pc, s_pila);
+    pila stack(clk, reset, wesp, push, pop, s_sumador_pc, s_pila);
 
     // Calculo de la entrada del pc
-    wire [9:0] s_sumador;
+    sum sumador(s_pc, 10'b1, s_sumador_pc);
 
-    sum sumador(s_pc, 10'b1, s_sumador);
-
-    mux2#(10) mux_sum_pal (instruccion[9:0], s_sumador, s_inc, s_mux_pc);
+    mux2#(10) mux_sum_pal (instruccion[9:0], s_sumador_pc, s_inc, s_mux_pc);
     
     // Para conectar el registro PC con la pila
     mux2#(10) mux_pc_stack (s_mux_pc, s_pila, pop, e_pc);
