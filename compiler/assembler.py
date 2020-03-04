@@ -13,8 +13,13 @@ PARSER = {
     "JZ"  : '110001',
     "JNZ" : '110010',
     "JN"  : '110011',
+    "PUSH": '110100',
+    "POP" : '110101',
+    "SKIP": '110110',
     "LOAD": '1000'
 }
+
+UNIQUE = ["PUSH", "POP", "SKIP"]
 
 COMPLEX = ["BEQ", "BNE", "BGT", "BGE", "BLT", "BLE"]
 
@@ -80,10 +85,13 @@ def process (instruction):
                 exit()
             return InmediateInstruction(instruction[0], instruction[1], instruction[2])
         elif opcode[:2] == "11":
-            if len(instruction) != 2:
+            if len(instruction) != 2 and not instruction[0] in UNIQUE:
                 print("ERROR! Jump instruction has too many arguments (expected 1, got {}".format(len(instruction) - 1))
                 exit()
-            return JumpInstruction(instruction[0], instruction[1])
+            if instruction[0] in UNIQUE:
+                return JumpInstruction(instruction[0], "0")
+            else:
+                return JumpInstruction(instruction[0], instruction[1])
         elif opcode[0] == "0":
             if len(instruction) != 4:
                 print("ERROR! ALU operation instruction has too many arguments (expected 3, got {}".format(len(instruction) - 1))

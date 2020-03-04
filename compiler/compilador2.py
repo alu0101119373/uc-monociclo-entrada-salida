@@ -29,7 +29,7 @@ with open(inFile) as iFile:
             if ass.isComplex(instruction):
                 context = ass.ComplexContext()
                 # Valoramos el tipo de instruccion que es
-                context.setInstruction(ass.analyzeInstruction(instruction))
+                context.setInstruction(ass.analyzeComplexInstruction(instruction))
                 binary = context.toBinary(instruction)
                 for index, ins in enumerate(binary):
                     oFile.write(ass.formatBinaryInstruction(ins) + '\n')
