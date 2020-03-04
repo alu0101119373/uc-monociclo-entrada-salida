@@ -10,6 +10,6 @@ module mempila (input wire clk, push, pop, input wire [9:0] dir, entrada, output
     always @(posedge clk)
         if (push) regb[dir] = entrada;
 
-    assign salida = pop ? regb[dir] : 1'bz;
+    assign salida = pop ? regb[dir] : 10'bz;
 
 endmodule

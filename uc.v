@@ -12,6 +12,9 @@ module uc(input wire [5:0] opcode, input wire s_z, output reg s_inc, s_inm, we3,
                     s_inm <= 1'b0;
                     we3 <= 1'b0;
                     wez <= 1'b0;
+                    wesp <= 1'b0;
+                    push <= 1'b0;
+                    pop <= 1'b0;
                 end
                 6'b110001:
                 begin
@@ -22,6 +25,9 @@ module uc(input wire [5:0] opcode, input wire s_z, output reg s_inc, s_inm, we3,
                     s_inm <= 1'b0;
                     we3 <= 1'b0;
                     wez <= 1'b0;
+                    wesp <= 1'b0;
+                    push <= 1'b0;
+                    pop <= 1'b0;
                 end
                 6'b110010:
                 begin
@@ -32,6 +38,9 @@ module uc(input wire [5:0] opcode, input wire s_z, output reg s_inc, s_inm, we3,
                     s_inm <= 1'b0;
                     we3 <= 1'b0;
                     wez <= 1'b0;
+                    wesp <= 1'b0;
+                    push <= 1'b0;
+                    pop <= 1'b0;
                 end
                 6'b110100:
                 begin
@@ -59,6 +68,9 @@ module uc(input wire [5:0] opcode, input wire s_z, output reg s_inc, s_inm, we3,
                     s_inm <= 1'b0;
                     we3 <= 1'b0;
                     wez <= 1'b0;
+                    wesp <= 1'b0;
+                    push <= 1'b0;
+                    pop <= 1'b0;
                 end
             endcase
         end
@@ -72,11 +84,17 @@ module uc(input wire [5:0] opcode, input wire s_z, output reg s_inc, s_inm, we3,
                 s_inm <= 1'b0;
                 we3 <= 1'b1;
                 wez <= 1'b1;
+                wesp <= 1'b0;
+                push <= 1'b0;
+                pop <= 1'b0;
                 op_alu <= opcode[4:2];
             end
             else
             begin
                 // Carga
+                wesp <= 1'b0;
+                push <= 1'b0;
+                pop <= 1'b0;
                 case (opcode[5:2])
                     4'b1000:
                     begin
