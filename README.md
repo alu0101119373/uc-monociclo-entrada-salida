@@ -6,7 +6,7 @@
 2. [Mejoras](#mejoras)
 3. [Compilación](#compilacion)
 4. [Formato de palabra](#formatoPalabra)
-5. [Microinstrucciones Implementadas](#microInstrucciones)
+5. [Instrucciones Implementadas](#microInstrucciones)
 6. [Ejemplo del funcionamiento de la CPU monociclo base](#funcionamientoCPU)
 
 ## Objetivo<a name="objetivo"></a>
@@ -29,6 +29,18 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 á del OPCODE. Aquí disponemos una imagen con detalles sobre la implementación de la misma:
 
 ![Plantilla Mejora Pila](./img/platillaPila.jpg)
+
+- Implementada instrucción `SKIP`. Esta instrucción se encarga sencillamente de saltarse la siguiente instrucción del programa. Pertenece a la rama de las instrucciones de salto.
+
+- Creado compilador para interpretar instrucciones utilizando etiquetas. Por ejemplo, la instrucción `LOAD 7 R1` el compilador la traduce a `1000_0000_0111_0001`. Además, tiene soporte para pseudo-instrucciones, de tal manera que la instrucción `BEQ R1 R2 DIR` se traduce como las instrucciones `SUB R1 R2 R0` y `JZ DIR`. La lista de pseudo-instrucciones implementadas en el compilador se incluyen en el apartado [Instrucciones implementadas](#microInstrucciones). Para ejecutar el compilador, use el siguiente comando en el directorio raíz del proyecto:
+
+```bash
+
+	./compiler/compilador2.py ensamblador.as progfile.dat
+
+```
+
+	Para que la CPU sea capaz de ejecutar el programa es necesario que el fichero se coloque en el directorio raíz con el nombre `progfile.dat`.
 
 ## Compilación<a name="compilacion"></a>
 
@@ -62,12 +74,12 @@ Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 
 
 ![Palabra para instrucción de la ALU](./img/palALU.png)
 
-## Microinstrucciones implementadas<a name="microInstrucciones"></a>
+## Instrucciones implementadas<a name="microInstrucciones"></a>
 
 Las instrucciones implementadas actualmente se representan en la siguiente tabla:
 
 ### Instrucciones de carga
-| MICROINSTRUCCIÓN | OPCODE | DESCRIPCIÓN                               |
+| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                               |
 | :--------------: | :----: | :---------------------------------------- |
 | **LOAD**         | 1000   | Carga un determinado valor en un registro |
 | **??**           | 1001   | ??                                        |
@@ -75,7 +87,7 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **??**           | 1011   | ??                                        |
 
 ### Instrucciones de salto
-| MICROINSTRUCCIÓN | OPCODE | DESCRIPCIÓN                                         |
+| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                                         |
 | :--------------: | :----: | :-------------------------------------------------- |
 | **J**            | 110000 | Salto incondicional                                 |
 | **JZ**           | 110001 | Salto si el flag de 0 está activo                   |
@@ -83,7 +95,7 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **??**           | 110011 | ??                                                  |
 | **PUSH**         | 110100 | Envía el valor siguiente de PC a la pila            |
 | **POP**          | 110101 | Recupera el último dato ingresado y lo pone en PC   |
-| **??**           | 110110 | ??                                                  |
+| **SKIP**         | 110110 | Se salta la siguiente instrucción del programa      |
 | **??**           | 110111 | ??                                                  |
 | **??**           | 111000 | ??                                                  |
 | **??**           | 111001 | ??                                                  |
@@ -95,7 +107,7 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **??**           | 111111 | ??                                                  |
 
 ### Instrucciones aritmético-lógicas
-| MICROINSTRUCCIÓN | OPCODE | DESCRIPCIÓN                               |
+| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                               |
 | :--------------: | :----: | :---------------------------------------- |
 | **ADD**          | 0010   | Suma                                      |
 | **SUB**          | 0011   | Resta                                     |
@@ -105,6 +117,19 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **SELF**         | 0000   | Devuelve el mismo valor que el de entrada |
 | **NFOP**         | 0110   | Niega el primer operando                  |
 | **NSOP**         | 0111   | Niega el segundo operando                 |
+
+### Pseudo-Instrucciones
+
+Para utilizar estas instrucciones se debe hacer uso del compilador proporcionado.
+
+| PSEUDO-INSTRUCCIÓN | INSTRUCCIONES NATIVAS EQUIVALENTES       | DESCRIPCIÓN                                                             |
+| :----------------: | :---------------------------------       | :---------------------------------------------------------------------- |
+| **BEQ** R1 R2 DIR  | **SUB** R1 R2 R0, **JZ** DIR             | Si los datos en R1 y en R2 son iguales, salta a la dirección DIR        |
+| **BNE** R1 R2 DIR  | **SUB** R1 R2 R0, **JNZ** DIR            | Si los datos en R1 y en R2 **no** son iguales, salta a la dirección DIR |
+| **BLT** R1 R2 DIR  | **SUB** R1 R2 R0, **JN** DIR             | Si el valor en R1 es menor que R2, salta a la dirección DIR             |
+| **BLE** R1 R2 DIR  | **SUB** R1 R2 R0, **JN** DIR, **JZ** DIR | Si el valor en R1 es menor **o igual** que R2, salta a la dirección DIR |
+| **BGT** R1 R2 DIR  | **SUB** R2 R1 R0, **JN** DIR             | Si el valor en R1 es mayor que R2, salta a la dirección DIR             |
+| **BGE** R1 R2 DIR  | **SUB** R2 R1 R0, **JN** DIR, **JZ** DIR | Si el valor en R1 es mayor **o igual** que R2, salta a la direcicón DIR |
 
 Como se puede observar, el repertorio de instrucciones de salto y de carga inmediata puede ser ampliado.
 
