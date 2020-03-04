@@ -23,7 +23,12 @@ El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implem
 
 ## Mejoras<a name="mejoras"></a>
 
-Por ahora no se ha realizado ninguna mejora de esta CPU.
+Estas son las mejoras que se han logrado implementar en este proyecto:
+
+- Pila: Se ha dispuesto una pila exclusiva para realizar subrutinas. De esta forma, esta pila interna en la CPU es capaz de guardar la posición siguiente en la dirección del PC con el objetivo de recuperarla posteriormente. Para ello, se dispone de dos nuevas instrucciones: `PUSH` y `POP`. Pese a pertenecer a la codificación de los saltos, estas instrucciones no requieren de ningún dato adicional más all
+á del OPCODE. Aquí disponemos una imagen con detalles sobre la implementación de la misma:
+
+![Plantilla Mejora Pila](./img/plantillaPila.jpg)
 
 ## Compilación<a name="compilacion"></a>
 
@@ -70,24 +75,24 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **??**           | 1011   | ??                                        |
 
 ### Instrucciones de salto
-| MICROINSTRUCCIÓN | OPCODE | DESCRIPCIÓN                              |
-| :--------------: | :----: | :--------------------------------------- |
-| **J**            | 110000 | Salto incondicional                      |
-| **JZ**           | 110001 | Salto si el flag de 0 está activo        |
-| **JNZ**          | 110010 | Salto si el flag de 0 **no** está activo |
-| **??**           | 110011 | ??                                       |
-| **??**           | 110100 | ??                                       |
-| **??**           | 110101 | ??                                       |
-| **??**           | 110110 | ??                                       |
-| **??**           | 110111 | ??                                       |
-| **??**           | 111000 | ??                                       |
-| **??**           | 111001 | ??                                       |
-| **??**           | 111010 | ??                                       |
-| **??**           | 111011 | ??                                       |
-| **??**           | 111100 | ??                                       |
-| **??**           | 111101 | ??                                       |
-| **??**           | 111110 | ??                                       |
-| **??**           | 111111 | ??                                       |
+| MICROINSTRUCCIÓN | OPCODE | DESCRIPCIÓN                                         |
+| :--------------: | :----: | :-------------------------------------------------- |
+| **J**            | 110000 | Salto incondicional                                 |
+| **JZ**           | 110001 | Salto si el flag de 0 está activo                   |
+| **JNZ**          | 110010 | Salto si el flag de 0 **no** está activo            |
+| **??**           | 110011 | ??                                                  |
+| **PUSH**         | 110100 | Envía el valor siguiente de PC a la pila            |
+| **POP**          | 110101 | Recupera el último dato ingresado y lo pone en PC   |
+| **??**           | 110110 | ??                                                  |
+| **??**           | 110111 | ??                                                  |
+| **??**           | 111000 | ??                                                  |
+| **??**           | 111001 | ??                                                  |
+| **??**           | 111010 | ??                                                  |
+| **??**           | 111011 | ??                                                  |
+| **??**           | 111100 | ??                                                  |
+| **??**           | 111101 | ??                                                  |
+| **??**           | 111110 | ??                                                  |
+| **??**           | 111111 | ??                                                  |
 
 ### Instrucciones aritmético-lógicas
 | MICROINSTRUCCIÓN | OPCODE | DESCRIPCIÓN                               |
