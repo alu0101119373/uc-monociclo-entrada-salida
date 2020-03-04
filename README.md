@@ -40,7 +40,7 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 ```
 
-	Para que la CPU sea capaz de ejecutar el programa es necesario que el fichero se coloque en el directorio raíz con el nombre `progfile.dat`.
+Para que la CPU sea capaz de ejecutar el programa es necesario que el fichero se coloque en el directorio raíz con el nombre `progfile.dat`.
 
 ## Compilación<a name="compilacion"></a>
 
