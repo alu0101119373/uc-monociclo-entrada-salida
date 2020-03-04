@@ -1,18 +1,26 @@
-module cd(input wire clk, reset, s_inc, s_inm, we3, wez, input wire [2:0] op_alu, output wire s_z, output wire [5:0] opcode);
+module cd(input wire clk, reset, s_inc, s_inm, we3, wez, wesp, push, pop, input wire [2:0] op_alu, output wire s_z, output wire [5:0] opcode);
 //Camino de datos de instrucciones de un solo ciclo
     wire [15:0] instruccion;
 
     // Program counter
-    wire [9:0] e_pc, s_pc;
+    wire [9:0] e_pc, s_pc, s_mux_pc;
 
     registro#(10) pc(clk, reset, 1'b1, e_pc, s_pc);
+
+    // Pila
+    wire [9:0] s_pila;
+
+    pila stack(clk, reset, wesp, push, pop, s_pc, s_pila);
 
     // Calculo de la entrada del pc
     wire [9:0] s_sumador;
 
     sum sumador(s_pc, 10'b1, s_sumador);
 
-    mux2#(10) mux_sum_pal (instruccion[9:0], s_sumador, s_inc, e_pc);
+    mux2#(10) mux_sum_pal (instruccion[9:0], s_sumador, s_inc, s_mux_pc);
+    
+    // Para conectar el registro PC con la pila
+    mux2#(10) mux_pc_stack (s_mux_pc, s_pila, pop, e_pc);
 
     // Memoria de programa
     memprog memoria_programa(clk, s_pc, instruccion);

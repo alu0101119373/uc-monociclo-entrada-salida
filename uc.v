@@ -1,4 +1,4 @@
-module uc(input wire [5:0] opcode, input wire s_z, output reg s_inc, s_inm, we3, wez, output reg [2:0] op_alu);
+module uc(input wire [5:0] opcode, input wire s_z, output reg s_inc, s_inm, we3, wez, wesp, push, pop, output reg [2:0] op_alu);
 
     always @(*)
     begin
@@ -32,6 +32,26 @@ module uc(input wire [5:0] opcode, input wire s_z, output reg s_inc, s_inm, we3,
                     s_inm <= 1'b0;
                     we3 <= 1'b0;
                     wez <= 1'b0;
+                end
+                6'b110100:
+                begin
+                    s_inc <= 1'b1;
+                    s_inm <= 1'b0;
+                    we3 <= 1'b0;
+                    wez <= 1'b0;
+                    wesp <= 1'b1;
+                    pop <= 1'b0;
+                    push <= 1'b1;
+                end
+                6'b110101:
+                begin
+                    s_inc <= 1'b0;
+                    s_inm <= 1'b0;
+                    we3 <= 1'b0;
+                    wez <= 1'b0;
+                    wesp <= 1'b1;
+                    pop <= 1'b1;
+                    push <= 1'b0;
                 end
                 default:
                 begin
