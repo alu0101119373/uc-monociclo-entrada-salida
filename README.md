@@ -30,7 +30,7 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 ![Plantilla Mejora Pila](./img/platillaPila.jpg)
 
-- Implementada instrucción `SKIP`. Esta instrucción se encarga sencillamente de saltarse la siguiente instrucción del programa. Pertenece a la rama de las instrucciones de salto.
+- Implementadas instrucciones `SKZ` y `SKNZ`. Estas instrucciones se encargan sencillamente de saltarse la siguiente instrucción del programa si se cumple la condición. Pertenece a la rama de las instrucciones de salto.
 
 - Creado compilador para interpretar instrucciones utilizando etiquetas. Por ejemplo, la instrucción `LOAD 7 R1` el compilador la traduce a `1000_0000_0111_0001`. Además, tiene soporte para pseudo-instrucciones, de tal manera que la instrucción `BEQ R1 R2 DIR` se traduce como las instrucciones `SUB R1 R2 R0` y `JZ DIR`. La lista de pseudo-instrucciones implementadas en el compilador se incluyen en el apartado [Instrucciones implementadas](#microInstrucciones). Para que la CPU sea capaz de ejecutar el programa es necesario que el fichero se coloque en el directorio raíz con el nombre `progfile.dat`. Para ejecutar el compilador, use el siguiente comando en el directorio raíz del proyecto:
 
@@ -85,24 +85,24 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **??**           | 1011   | ??                                        |
 
 ### Instrucciones de salto
-| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                                         |
-| :--------------: | :----: | :-------------------------------------------------- |
-| **J**            | 110000 | Salto incondicional                                 |
-| **JZ**           | 110001 | Salto si el flag de 0 está activo                   |
-| **JNZ**          | 110010 | Salto si el flag de 0 **no** está activo            |
-| **??**           | 110011 | ??                                                  |
-| **PUSH**         | 110100 | Envía el valor siguiente de PC a la pila            |
-| **POP**          | 110101 | Recupera el último dato ingresado y lo pone en PC   |
-| **SKIP**         | 110110 | Se salta la siguiente instrucción del programa      |
-| **??**           | 110111 | ??                                                  |
-| **??**           | 111000 | ??                                                  |
-| **??**           | 111001 | ??                                                  |
-| **??**           | 111010 | ??                                                  |
-| **??**           | 111011 | ??                                                  |
-| **??**           | 111100 | ??                                                  |
-| **??**           | 111101 | ??                                                  |
-| **??**           | 111110 | ??                                                  |
-| **??**           | 111111 | ??                                                  |
+| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                                                                             |
+| :--------------: | :----: | :-------------------------------------------------------------------------------------- |
+| **J**            | 110000 | Salto incondicional                                                                     |
+| **JZ**           | 110001 | Salto si el flag de 0 está activo                                                       |
+| **JNZ**          | 110010 | Salto si el flag de 0 **no** está activo                                                |
+| **??**           | 110011 | ??                                                                                      |
+| **PUSH**         | 110100 | Envía el valor siguiente de PC a la pila                                                |
+| **POP**          | 110101 | Recupera el último dato ingresado y lo pone en PC                                       |
+| **SKZ**          | 110110 | Se salta la siguiente instrucción del programa si el flag de Z está activo              |
+| **SKNZ**         | 110111 | Se salta la siguiente instrucción del programa si el flag de Z **no** está activo       |
+| **??**           | 111000 | ??                                                                                      |
+| **??**           | 111001 | ??                                                                                      |
+| **??**           | 111010 | ??                                                                                      |
+| **??**           | 111011 | ??                                                                                      |
+| **??**           | 111100 | ??                                                                                      |
+| **??**           | 111101 | ??                                                                                      |
+| **??**           | 111110 | ??                                                                                      |
+| **??**           | 111111 | ??                                                                                      |
 
 ### Instrucciones aritmético-lógicas
 | INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                               |

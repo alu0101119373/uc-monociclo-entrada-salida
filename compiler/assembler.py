@@ -15,11 +15,12 @@ PARSER = {
     "JN"  : '110011',
     "PUSH": '110100',
     "POP" : '110101',
-    "SKIP": '110110',
+    "SKZ"  : '110110',
+    "SKNZ" : '110111',
     "LOAD": '1000'
 }
 
-UNIQUE = ["PUSH", "POP", "SKIP"]
+UNIQUE = ["PUSH", "POP", "SZ", "SNZ"]
 
 COMPLEX = ["BEQ", "BNE", "BGT", "BGE", "BLT", "BLE"]
 

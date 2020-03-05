@@ -105,7 +105,20 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, output reg s_
                         wesp <= 1'b0;
                         pop <= 1'b0;
                         push <= 1'b0;
-                        skip <= 1'b1;
+                        if (s_z == 1'b1)
+                            skip <= 1'b1;
+                    end
+                    6'b110111:
+                    begin
+                        s_inc <= 1'b1;
+                        s_inm <= 1'b0;
+                        we3 <= 1'b0;
+                        wez <= 1'b0;
+                        wesp <= 1'b0;
+                        pop <= 1'b0;
+                        push <= 1'b0;
+                        if (s_z != 1'b1)
+                            skip <= 1'b1;
                     end
                     default:
                     begin
