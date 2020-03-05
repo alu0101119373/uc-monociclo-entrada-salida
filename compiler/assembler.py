@@ -20,7 +20,7 @@ PARSER = {
     "LOAD": '1000'
 }
 
-UNIQUE = ["PUSH", "POP", "SZ", "SNZ"]
+UNIQUE = ["PUSH", "POP", "SKZ", "SKNZ"]
 
 COMPLEX = ["BEQ", "BNE", "BGT", "BGE", "BLT", "BLE"]
 
