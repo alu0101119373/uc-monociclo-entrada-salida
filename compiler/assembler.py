@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import re
+import os
+
 PARSER = {
     "ADD" : '0010',
     "SUB" : '0011',
@@ -43,6 +46,89 @@ REGISTER = {
     "R15": "1111"
 }
 
+regexTag = r"^[A-Za-z]\w*:[ ]*$"
+
+def getFileName (path):
+    return os.path.split(path)[1]
+
+def cleaningFile (filename):
+    resultFile = "/tmp/{}.clean".format(getFileName(filename))
+    with open(filename) as ifile:
+        with open(resultFile, 'w') as ofile:
+            for line in ifile:
+                fline = line.strip()
+                if fline != "":
+                    ofile.write(fline + '\n')
+    return resultFile
+
+def processComments (filename):
+    resultFile = "/tmp/{}.noc".format(getFileName(filename))
+    with open(filename) as ifile:
+        with open(resultFile, 'w') as ofile:
+            for line in ifile:
+                if line[0] != '#':
+                    index = 0
+                    try:
+                        index = line.index('#')
+                    except ValueError:
+                        pass
+                    if index != 0:
+                        ofile.write(line[:index] + '\n')
+                    else:
+                        ofile.write(line)
+            ofile.write('\n')
+    return resultFile
+
+def processComplexInstructions (filename):
+    resultFile = "/tmp/{}.nci".format(getFileName(filename))
+    with open(filename) as ifile:
+        with open(resultFile, 'w') as ofile:
+            for line in ifile:
+                if re.search(regexTag, line) == None and line.strip() != "":
+                    context = ComplexContext()
+                    parts = divideInstruction(line)
+                    if isComplex(parts):
+                        context.setInstruction(analyzeComplexInstruction(parts))
+                        nativeInstructions = context.getNativeInstructions(parts)
+                        for ins in nativeInstructions:
+                            ofile.write(ins.__str__() + '\n')
+                    else:
+                        ofile.write(line)
+                else:
+                    ofile.write(line)
+    return resultFile
+
+def processTags (filename):
+    resultFile = "/tmp/{}.tags".format(getFileName(filename))
+    tags = readTags(filename)
+    with open(filename) as ifile:
+        with open(resultFile, 'w') as ofile:
+            for line in ifile:
+                if line.strip() != "":
+                    if re.search(regexTag, line) == None:
+                        wline = []
+                        splitting = [ word.strip() for word in line.split() if line.strip() != "" ]
+                        for word in splitting:
+                            if word in tags:
+                                wline.append(str(tags[word]))
+                            else:
+                                wline.append(word)
+                        wline = (' ').join(wline)
+                        ofile.write(wline + '\n')
+    return resultFile
+
+
+def readTags (filename):
+    dic = {}
+    with open(filename) as file:
+        cont = 0
+        for index, line in enumerate(file):
+            if re.search(regexTag, line) != None:
+                cont += 1
+                key = line.strip()[:line.index(':')]
+                dic[key] = index - cont + 1
+    return dic
+
 def formatBinaryInstruction(bInstruction):
     result = ""
     if len(bInstruction) == 16:
@@ -72,9 +158,9 @@ def analyzeComplexInstruction (instruction):
     elif instruction[0] == "BLE":
         instance = BLE()
     elif instruction[0] == "BGT":
-        instance = BLE()
+        instance = BGT()
     elif instruction[0] == "BGE":
-        instance = BLE()
+        instance = BGE()
 
     return instance
 
@@ -104,6 +190,8 @@ def process (instruction):
             exit()        
     else:
         print("ERROR! Instruction not recognized")
+
+# CLASES Y JERARQUIA DEL PATRON STRATEGY
 
 class Instruction:
     """Almacena la información básica de cualquier instrucción"""
@@ -193,32 +281,32 @@ class BEQ (ComplexInstruction):
 
 class BNE (ComplexInstruction):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[1], instruction[2], "R15")
+        resta = AluInstruction("SUB", instruction[1], instruction[2], "R0")
         salto = JumpInstruction("JNZ", instruction[3])
         return [resta, salto]
 
 class BLT (ComplexInstruction):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[1], instruction[2], "R15")
+        resta = AluInstruction("SUB", instruction[1], instruction[2], "R0")
         salto = JumpInstruction("JN", instruction[3])
         return [resta, salto]
 
 class BLE (ComplexInstruction):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[1], instruction[2], "R15")
+        resta = AluInstruction("SUB", instruction[1], instruction[2], "R0")
         salto1 = JumpInstruction("JN", instruction[3])
         salto2 = JumpInstruction("JZ", instruction[3])
         return [resta, salto1, salto2]
 
 class BGT (ComplexContext):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[2], instruction[1], "R15")
+        resta = AluInstruction("SUB", instruction[2], instruction[1], "R0")
         salto = JumpInstruction("JN", instruction[3])
         return [resta, salto]
 
 class BGE (ComplexContext):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[2], instruction[1], "R15")
+        resta = AluInstruction("SUB", instruction[2], instruction[1], "R0")
         salto1 = JumpInstruction("JN", instruction[3])
         salto2 = JumpInstruction("JZ", instruction[3])
         return [resta, salto1, salto2]

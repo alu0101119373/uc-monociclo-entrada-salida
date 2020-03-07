@@ -1,4 +1,4 @@
-module cd(input wire clk, reset, s_inc, s_inm, we3, wez, wesp, push, pop, input wire [2:0] op_alu, output wire s_z, output wire [5:0] opcode);
+module cd(input wire clk, reset, s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, input wire [2:0] op_alu, output wire s_z, s_n, output wire [5:0] opcode);
 //Camino de datos de instrucciones de un solo ciclo
     wire [15:0] instruccion;
 
@@ -34,12 +34,15 @@ module cd(input wire clk, reset, s_inc, s_inm, we3, wez, wesp, push, pop, input 
     mux2 mux_wd3 (s_alu, instruccion[11:4], s_inm, wd3);
 
     // ALU
-    wire zalu;
+    wire zalu, carry, nalu;
 
-    alu uni_art_log(rd1, rd2, op_alu, s_alu, zalu);
+    alu uni_art_log(rd1, rd2, op_alu, bp, carry, s_alu, nalu, zalu);
 
     // FFZ
     ffd ffz(clk, reset, zalu, wez, s_z);
+
+    // FFN
+    ffd ffn(clk, reset, nalu, wen, s_n);
 
     assign opcode = instruccion[15:10];
 

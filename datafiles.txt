@@ -1,8 +1,8 @@
-componentes.v
-alu.v
-memprog.v
-cd.v
-uc.v
-pila.v
-mempila.v
-sumrest.v
+bin/componentes.v
+bin/alu.v
+bin/memprog.v
+bin/cd.v
+bin/uc.v
+bin/pila.v
+bin/mempila.v
+bin/sumrest.v

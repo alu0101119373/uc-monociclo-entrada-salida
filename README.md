@@ -40,6 +40,12 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 ```
 
+- El compilador ahora soporta etiquetas para facilitarnos los saltos en el programa.
+
+- Añadido flag que informa a la UC de que el resultado de la última operación de la ALU ha dado un valor negativo. Con esto, también se implementa la diferenciación de operaciones aritméticas en binario puro y en complemento a dos.
+
+- Implementada instrucción JN, que habilita un salto a la dirección indicada si el flag de negativo está activo.
+
 ## Compilación<a name="compilacion"></a>
 
 Para compilar el proyecto, se debe situar la terminal en la raíz del mismo y ejecutar el siguiente comando:
@@ -90,7 +96,7 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **J**            | 110000 | Salto incondicional                                                                     |
 | **JZ**           | 110001 | Salto si el flag de 0 está activo                                                       |
 | **JNZ**          | 110010 | Salto si el flag de 0 **no** está activo                                                |
-| **??**           | 110011 | ??                                                                                      |
+| **JN**           | 110011 | Salto si el flag de negativo está activo                                                |
 | **PUSH**         | 110100 | Envía el valor siguiente de PC a la pila                                                |
 | **POP**          | 110101 | Recupera el último dato ingresado y lo pone en PC                                       |
 | **SKZ**          | 110110 | Se salta la siguiente instrucción del programa si el flag de Z está activo              |

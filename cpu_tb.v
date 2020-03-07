@@ -29,8 +29,7 @@ end
 
 initial
 begin
-
-  #(10*60);  //Esperamos 8 ciclos o 8 instrucciones
+  #(100*60);  //Esperamos 100 ciclos o 100 instrucciones
   $finish;
 end
 

@@ -17,6 +17,24 @@ if not path.exists(inFile):
     print("ERROR! File does not exist!")
     exit()
 
+print()
+
+print("Quitting spaces...")
+
+inFile = ass.cleaningFile(inFile)
+
+print("Removing comments...")
+
+inFile = ass.processComments(inFile)
+
+print("Processing complex instructions...")
+
+inFile = ass.processComplexInstructions(inFile)
+
+print("Processing tags...")
+
+inFile = ass.processTags(inFile)
+
 print("Starting compilation process...\n")
 
 # Leemos el fichero
@@ -25,29 +43,15 @@ oFile = open(outFile, "w")
 with open(inFile) as iFile:
     for index, line in enumerate(iFile):
         fline = line.strip()
-        print("Processing instruction {}: {:15}, ".format(index+1, fline), end=" ")
         # Procesamos la instruccion
         if len(fline) != 0:
+            print("Processing instruction {:3}: {:15}, ".format(str(index+1).zfill(3), fline), end=" ")
             instruction = ass.divideInstruction(fline)
-            if ass.isComplex(instruction):
-                context = ass.ComplexContext()
-                # Valoramos el tipo de instruccion que es
-                context.setInstruction(ass.analyzeComplexInstruction(instruction))
-                binary = context.toBinary(instruction)
-                for index, ins in enumerate(binary):
-                    oFile.write(ass.formatBinaryInstruction(ins) + '\n')
-                    cont += 1
-                    print("{:16}".format(ins), end="")
-                    if index < len(binary) - 1:
-                        print(",", end=" ")
-                    else:
-                        print()
-            else:
-                instruction = ass.process(instruction)
-                binary = instruction.toBinary()
-                oFile.write(ass.formatBinaryInstruction(binary) + '\n')
-                cont += 1
-                print(binary)
+            instruction = ass.process(instruction)
+            binary = instruction.toBinary()
+            oFile.write(ass.formatBinaryInstruction(binary) + '\n')
+            cont += 1
+            print(binary)
 
 print("\nTotal processed instructions: {}\n".format(cont))
 
