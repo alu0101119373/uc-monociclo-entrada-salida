@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+import re
+from os import path
+
 PARSER = {
     "ADD" : '0010',
     "SUB" : '0011',
@@ -43,9 +46,16 @@ REGISTER = {
     "R15": "1111"
 }
 
+regexTag = r"^[A-Za-z]\w*:[ ]*$"
+
+def getFileName (path):
+    result = path.split(path)
+    return result[1]
+
 def processComments (filename):
+    resultFile = "/tmp/{}.noc".format(getFileName(filename))
     with open(filename) as ifile:
-        with open("/tmp/" + filename, 'w') as ofile:
+        with open(resultFile, 'w') as ofile:
             for line in ifile:
                 if line[0] != '#':
                     index = 0
@@ -58,8 +68,36 @@ def processComments (filename):
                     else:
                         ofile.write(line)
             ofile.write('\n')
-    return "/tmp/{}".format(filename)
+    return resultFile
 
+def processTags (filename):
+    resultFile = "/tmp/{}.tags".format(getFileName(filename))
+    tags = readTags(filename)
+    with open(filename) as ifile:
+        with open(resultFile, 'w') as ofile:
+            for line in ifile:
+                if line.strip() != "":
+                    if re.search(regexTag, line) == None:
+                        wline = []
+                        splitting = [ word.strip() for word in line.split() if line.strip() != "" ]
+                        for word in splitting:
+                            if word in tags:
+                                wline.append(str(tags[word]))
+                            else:
+                                wline.append(word)
+                        wline = (' ').join(wline)
+                        ofile.write(wline + '\n')
+    return resultFile
+
+
+def readTags (filename):
+    dic = {}
+    with open(filename) as file:
+        for index, line in enumerate(file):
+            if re.search(regexTag, line) != None:
+                key = line.strip()[:line.index(':')]
+                dic[key] = index
+    return dic
 
 def formatBinaryInstruction(bInstruction):
     result = ""

@@ -23,6 +23,10 @@ print("Removing comments...")
 
 inFile = ass.processComments(inFile)
 
+print("Processing tags...")
+
+inFile = ass.processTags(inFile)
+
 print("Starting compilation process...\n")
 
 # Leemos el fichero
@@ -33,7 +37,7 @@ with open(inFile) as iFile:
         fline = line.strip()
         # Procesamos la instruccion
         if len(fline) != 0:
-            print("Processing instruction {}: {:15}, ".format(index+1, fline), end=" ")
+            print("Processing instruction {:3}: {:15}, ".format(str(index+1).zfill(3), fline), end=" ")
             instruction = ass.divideInstruction(fline)
             if ass.isComplex(instruction):
                 context = ass.ComplexContext()
