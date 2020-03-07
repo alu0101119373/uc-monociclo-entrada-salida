@@ -20,6 +20,7 @@ LOAD 1 R1	# i
 for:
 	BGE R1 R15 finfor
 	ADD R2 R14 R2
+	ADD R1 R14 R1
 	J for
 finfor:
 	ADD R2 R0 R0
