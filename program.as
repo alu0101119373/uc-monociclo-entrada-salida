@@ -4,7 +4,7 @@
 #
 # Equivalencia:
 # int acc = 0;
-# for (int i = 1; i != 10; i++) {
+# for (int i = 1; i < 10; i++) {
 # 	acc = acc + 1;
 # }
 # acc = acc + 0;
@@ -18,7 +18,7 @@ LOAD 0 R2	# acc
 
 LOAD 1 R1	# i
 for:
-	BEQ R1 R15 finfor
+	BGE R1 R15 finfor
 	ADD R2 R14 R2
 	J for
 finfor:

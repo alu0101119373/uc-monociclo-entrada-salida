@@ -251,32 +251,32 @@ class BEQ (ComplexInstruction):
 
 class BNE (ComplexInstruction):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[1], instruction[2], "R15")
+        resta = AluInstruction("SUB", instruction[1], instruction[2], "R0")
         salto = JumpInstruction("JNZ", instruction[3])
         return [resta, salto]
 
 class BLT (ComplexInstruction):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[1], instruction[2], "R15")
+        resta = AluInstruction("SUB", instruction[1], instruction[2], "R0")
         salto = JumpInstruction("JN", instruction[3])
         return [resta, salto]
 
 class BLE (ComplexInstruction):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[1], instruction[2], "R15")
+        resta = AluInstruction("SUB", instruction[1], instruction[2], "R0")
         salto1 = JumpInstruction("JN", instruction[3])
         salto2 = JumpInstruction("JZ", instruction[3])
         return [resta, salto1, salto2]
 
 class BGT (ComplexContext):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[2], instruction[1], "R15")
+        resta = AluInstruction("SUB", instruction[2], instruction[1], "R0")
         salto = JumpInstruction("JN", instruction[3])
         return [resta, salto]
 
 class BGE (ComplexContext):
     def getNativeInstructions (self, instruction):
-        resta = AluInstruction("SUB", instruction[2], instruction[1], "R15")
+        resta = AluInstruction("SUB", instruction[2], instruction[1], "R0")
         salto1 = JumpInstruction("JN", instruction[3])
         salto2 = JumpInstruction("JZ", instruction[3])
         return [resta, salto1, salto2]

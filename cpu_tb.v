@@ -30,7 +30,7 @@ end
 initial
 begin
 
-  #(8*60);  //Esperamos 8 ciclos o 8 instrucciones
+  #(100*60);  //Esperamos 8 ciclos o 8 instrucciones
   $finish;
 end
 
