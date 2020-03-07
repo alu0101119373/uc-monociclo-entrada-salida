@@ -17,6 +17,12 @@ if not path.exists(inFile):
     print("ERROR! File does not exist!")
     exit()
 
+print()
+
+print("Removing comments...")
+
+inFile = ass.processComments(inFile)
+
 print("Starting compilation process...\n")
 
 # Leemos el fichero
@@ -25,9 +31,9 @@ oFile = open(outFile, "w")
 with open(inFile) as iFile:
     for index, line in enumerate(iFile):
         fline = line.strip()
-        print("Processing instruction {}: {:15}, ".format(index+1, fline), end=" ")
         # Procesamos la instruccion
         if len(fline) != 0:
+            print("Processing instruction {}: {:15}, ".format(index+1, fline), end=" ")
             instruction = ass.divideInstruction(fline)
             if ass.isComplex(instruction):
                 context = ass.ComplexContext()

@@ -20,7 +20,7 @@ PARSER = {
     "LOAD": '1000'
 }
 
-UNIQUE = ["PUSH", "POP", "SZ", "SNZ"]
+UNIQUE = ["PUSH", "POP", "SKZ", "SKNZ"]
 
 COMPLEX = ["BEQ", "BNE", "BGT", "BGE", "BLT", "BLE"]
 
@@ -42,6 +42,24 @@ REGISTER = {
     "R14": "1110",
     "R15": "1111"
 }
+
+def processComments (filename):
+    with open(filename) as ifile:
+        with open("/tmp/" + filename, 'w') as ofile:
+            for line in ifile:
+                if line[0] != '#':
+                    index = 0
+                    try:
+                        index = line.index('#')
+                    except ValueError:
+                        pass
+                    if index != 0:
+                        ofile.write(line[:index] + '\n')
+                    else:
+                        ofile.write(line)
+            ofile.write('\n')
+    return "/tmp/{}".format(filename)
+
 
 def formatBinaryInstruction(bInstruction):
     result = ""
@@ -104,6 +122,8 @@ def process (instruction):
             exit()        
     else:
         print("ERROR! Instruction not recognized")
+
+# CLASES Y JERARQUIA DEL PATRON STRATEGY
 
 class Instruction:
     """Almacena la información básica de cualquier instrucción"""
