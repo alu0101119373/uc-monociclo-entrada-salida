@@ -36,7 +36,7 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 ```bash
 
-	./compiler/compilador2.py ensamblador.as progfile.dat
+	./compilar program.as progfile.dat
 
 ```
 
