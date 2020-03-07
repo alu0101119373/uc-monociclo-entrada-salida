@@ -10,13 +10,13 @@
 # acc = acc + 0;
 #
 # Variables globales
-LOAD 1 R1	# i
 LOAD 10 R15	# 10
 
 LOAD 1 R14	# inm para acumular
 
 LOAD 0 R2	# acc
 
+LOAD 1 R1	# i
 for:
 	BEQ R1 R15 finfor
 	ADD R2 R14 R2
