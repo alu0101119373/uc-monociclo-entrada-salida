@@ -46,6 +46,8 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 - Implementada instrucción JN, que habilita un salto a la dirección indicada si el flag de negativo está activo.
 
+- Añadida pseudo-instrucciones `GOTO` y `RETURN` para ir a una subrutina y volver de ella respectivamente. Hacen uso de la pila para su funcionamiento.
+
 ## Compilación<a name="compilacion"></a>
 
 Para compilar el proyecto, se debe situar la terminal en la raíz del mismo y ejecutar el siguiente comando:
@@ -134,6 +136,8 @@ Para utilizar estas instrucciones se debe hacer uso del compilador proporcionado
 | **BLE** R1 R2 DIR  | **SUB** R1 R2 R0, **JN** DIR, **JZ** DIR | Si el valor en R1 es menor **o igual** que R2, salta a la dirección DIR |
 | **BGT** R1 R2 DIR  | **SUB** R2 R1 R0, **JN** DIR             | Si el valor en R1 es mayor que R2, salta a la dirección DIR             |
 | **BGE** R1 R2 DIR  | **SUB** R2 R1 R0, **JN** DIR, **JZ** DIR | Si el valor en R1 es mayor **o igual** que R2, salta a la direcicón DIR |
+| **GOTO** DIR	     | **PUSH**, **J** DIR			| Salta a una subrutina, en la dirección DIR                              |
+| **RETURN**         | **POP**                                  | Vuelve de la subrutina para retomar la ejecución                        |
 
 Como se puede observar, el repertorio de instrucciones de salto y de carga inmediata puede ser ampliado.
 

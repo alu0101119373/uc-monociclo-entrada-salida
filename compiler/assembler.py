@@ -161,6 +161,10 @@ def analyzeComplexInstruction (instruction):
         instance = BGT()
     elif instruction[0] == "BGE":
         instance = BGE()
+    elif instruction[0] == "GOTO":
+        instance = GOTO()
+    elif instruction[0] == "RETURN":
+        instance = RETURN()
 
     return instance
 
@@ -298,15 +302,27 @@ class BLE (ComplexInstruction):
         salto2 = JumpInstruction("JZ", instruction[3])
         return [resta, salto1, salto2]
 
-class BGT (ComplexContext):
+class BGT (ComplexInstruction):
     def getNativeInstructions (self, instruction):
         resta = AluInstruction("SUB", instruction[2], instruction[1], "R0")
         salto = JumpInstruction("JN", instruction[3])
         return [resta, salto]
 
-class BGE (ComplexContext):
+class BGE (ComplexInstruction):
     def getNativeInstructions (self, instruction):
         resta = AluInstruction("SUB", instruction[2], instruction[1], "R0")
         salto1 = JumpInstruction("JN", instruction[3])
         salto2 = JumpInstruction("JZ", instruction[3])
         return [resta, salto1, salto2]
+
+class GOTO (ComplexInstruction):
+    """GOTO DIR"""
+    def getNativeInstructions(self, instruction):
+        push = JumpInstruction("PUSH", "0")
+        salto = JumpInstruction("J", instruction[1])
+        return [push, salto]
+
+class RETURN (ComplexInstruction):
+    def getNativeInstructions(self, instruction):
+        pop = JumpInstruction("POP", "0")
+        return [pop]
