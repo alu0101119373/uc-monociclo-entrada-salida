@@ -1,4 +1,4 @@
-# PRÁCTICA 2: Diseño de una CPU monociclo
+# PRÁCTICA 3: Comunicación de la CPU con dispositivos entrada/salida
 
 ## Índice
 
