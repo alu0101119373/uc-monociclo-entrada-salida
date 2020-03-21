@@ -1,4 +1,4 @@
-module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output reg s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, output reg [2:0] op_alu);
+module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output reg s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, output reg [2:0] op_alu);
 
     // Flag interno para el skip
     reg skip, cont;
@@ -35,6 +35,12 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output r
             wesp <= 1'b0;
             push <= 1'b0;
             pop <= 1'b0;
+            s_inp <= 1'b0;
+            s_outp <= 1'b0;
+            owe1 <= 1'b0;
+            owe2 <= 1'b0;
+            owe3 <= 1'b0;
+            owe4 <= 1'b0;
             cont = cont + 1;
         end
         else
@@ -42,6 +48,12 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output r
             if (opcode[5:4] == 2'b11)
             begin
                 // 6 bits (saltos)
+                s_inp <= 1'b0;
+                s_outp <= 1'b0;
+                owe1 <= 1'b0;
+                owe2 <= 1'b0;
+                owe3 <= 1'b0;
+                owe4 <= 1'b0;
                 case (opcode)
                     6'b110000:
                     begin
@@ -171,6 +183,12 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output r
                     wesp <= 1'b0;
                     push <= 1'b0;
                     pop <= 1'b0;
+                    s_inp <= 1'b0;
+                    s_outp <= 1'b0;
+                    owe1 <= 1'b0;
+                    owe2 <= 1'b0;
+                    owe3 <= 1'b0;
+                    owe4 <= 1'b0;
                     op_alu <= opcode[4:2];
                 end
                 else
@@ -179,22 +197,82 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output r
                     wesp <= 1'b0;
                     push <= 1'b0;
                     pop <= 1'b0;
+                    wez <= 1'b0;
+                    wen <= 1'b0;
                     case (opcode[5:2])
                         4'b1000:
                         begin
                             s_inc <= 1'b1;
                             s_inm <= 1'b1;
                             we3 <= 1'b1;
-                            wez <= 1'b0;
-                            wen <= 1'b0;
+                            s_inp <= 1'b0;
+                            s_outp <= 1'b0;
+                            owe1 <= 1'b0;
+                            owe2 <= 1'b0;
+                            owe3 <= 1'b0;
+                            owe4 <= 1'b0;
+                        end
+                        4'b1001:
+                        begin
+                            s_inc <= 1'b1;
+                            s_inm <= 1'b0;
+                            we3 <= 1'b1;
+                            s_inp <= 1'b1;
+                            s_outp <= 1'b0;
+                            owe1 <= 1'b0;
+                            owe2 <= 1'b0;
+                            owe3 <= 1'b0;
+                            owe4 <= 1'b0;
+                        end
+                        4'b1010:
+                        begin
+                            s_inc <= 1'b1;
+                            s_inm <= 1'b0;
+                            we3 <= 1'b0;
+                            s_inp <= 1'b0;
+                            s_outp <= 1'b1;
+                            case (opcode[1:0])
+                                2'b00:
+                                begin
+                                    owe1 <= 1'b1;
+                                    owe2 <= 1'b0;
+                                    owe3 <= 1'b0;
+                                    owe4 <= 1'b0;
+                                end
+                                2'b01:
+                                begin
+                                    owe1 <= 1'b0;
+                                    owe2 <= 1'b1;
+                                    owe3 <= 1'b0;
+                                    owe4 <= 1'b0;
+                                end
+                                2'b10:
+                                begin
+                                    owe1 <= 1'b0;
+                                    owe2 <= 1'b0;
+                                    owe3 <= 1'b1;
+                                    owe4 <= 1'b0;
+                                end
+                                2'b11:
+                                begin
+                                    owe1 <= 1'b0;
+                                    owe2 <= 1'b0;
+                                    owe3 <= 1'b0;
+                                    owe4 <= 1'b1;
+                                end
+                            endcase
                         end
                         default:
                         begin
                             s_inc <= 1'b1;
-                            s_inm <= 1'b1;
-                            we3 <= 1'b1;
-                            wez <= 1'b0;
-                            wen <= 1'b0;
+                            s_inm <= 1'b0;
+                            we3 <= 1'b0;
+                            s_inp <= 1'b0;
+                            s_outp <= 1'b0;
+                            owe1 <= 1'b0;
+                            owe2 <= 1'b0;
+                            owe3 <= 1'b0;
+                            owe4 <= 1'b0;
                         end
                     endcase
                 end

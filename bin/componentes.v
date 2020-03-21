@@ -66,19 +66,23 @@ module mux4 #(parameter WIDTH = 8)
               input wire             s1, s2,
               output wire [WIDTH-1:0] y);
 
+  reg [WIDTH-1:0] s;
+
   always @(*)
   begin
     if (s1 == 1'b0 && s2 == 1'b0)
-      y <= d0;
+      s <= d0;
     else if (s1 == 1'b0 && s2 == 1'b1)
-      y <= d1;
+      s <= d1;
     else if (s1 == 1'b1 && s2 == 1'b0)
-      y <= d2;
+      s <= d2;
     else if (s1 == 1'b1 && s2 == 1'b1)
-      y <= d3;
+      s <= d3;
     else
-      y <= x;
+      s <= 1'b0;
   end
+
+  assign y = s;
 
 endmodule
 

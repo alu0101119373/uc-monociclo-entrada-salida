@@ -1,4 +1,4 @@
-module cd(input wire clk, reset, s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, input wire [2:0] op_alu, output wire s_z, s_n, output wire [5:0] opcode);
+module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_port4, input wire s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, input wire [2:0] op_alu, output wire s_z, s_n, output wire [7:0] s_port1, s_port2, s_port3, s_port4, output wire [5:0] opcode);
 //Camino de datos de instrucciones de un solo ciclo
     wire [15:0] instruccion;
 
@@ -25,13 +25,36 @@ module cd(input wire clk, reset, s_inc, s_inm, we3, wez, wen, wesp, bp, push, po
 
     // Banco de registros
     wire [7:0] wd3, rd1, rd2;
+    wire [3:0] ra1;
 
-    regfile banco_registros (clk, we3, instruccion[11:8], instruccion[7:4], instruccion[3:0], wd3, rd1, rd2);
+    // ra1 variara en funcion de si es un output o no
+    mux2#(4) mux_outp (instruccion[11:8], instruccion[3:0], s_outp, ra1);
+
+    regfile banco_registros (clk, we3, ra1, instruccion[7:4], instruccion[3:0], wd3, rd1, rd2);
+
+    // Puertos de entrada
+    wire [7:0] s_ip1, s_ip2, s_ip3, s_ip4, s_input;
+
+    registro iport1 (clk, reset, 1'b1, e_port1, s_ip1);
+    registro iport2 (clk, reset, 1'b1, e_port2, s_ip2);
+    registro iport3 (clk, reset, 1'b1, e_port3, s_ip3);
+    registro iport4 (clk, reset, 1'b1, e_port4, s_ip4);
+
+    mux4 mux4_input(s_ip1, s_ip2, s_ip3, s_ip4, instruccion[11], instruccion[10], s_input);
 
     // Calculo de dato a escribir (wd3)
-    wire [7:0] s_alu;
+    wire [7:0] s_alu, s_mux1_wd3;
 
-    mux2 mux_wd3 (s_alu, instruccion[11:4], s_inm, wd3);
+    mux2 mux_wd3 (s_alu, instruccion[11:4], s_inm, s_mux1_wd3);
+
+    // Multiplexor para elegir si se coge del input o interno a la cpu
+    mux2 mux_es_alu (s_mux1_wd3, s_input, s_inp, wd3);
+
+    // Puertos de salida
+    registro oport1 (clk, reset, owe1, rd1, s_port1);
+    registro oport2 (clk, reset, owe2, rd1, s_port2);
+    registro oport3 (clk, reset, owe3, rd1, s_port3);
+    registro oport4 (clk, reset, owe4, rd1, s_port4);
 
     // ALU
     wire zalu, carry, nalu;
