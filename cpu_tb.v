@@ -15,8 +15,11 @@ begin
   #30;
 end
 
+// Representacion de los 4 displays 7 seg
+wire [7:0] display [0:3];
+
 // instanciación del procesador
-cpu micpu(clk, reset);
+cpu micpu(clk, reset, 8'b0, 8'b0, 8'b0, 8'b0, display[0], display[1], display[2], display[3]);
 
 initial
 begin

@@ -20,7 +20,9 @@ PARSER = {
     "POP" : '110101',
     "SKZ"  : '110110',
     "SKNZ" : '110111',
-    "LOAD": '1000'
+    "LOAD": '1000',
+    "IN"  : '1001',
+    "OUT" : '1010'
 }
 
 UNIQUE = ["PUSH", "POP", "SKZ", "SKNZ"]
@@ -137,8 +139,14 @@ def formatBinaryInstruction(bInstruction):
         print("ERROR!")
     return result
 
-def inmToBit (bit, inmediate):
-    return "{:b}".format(int(inmediate)).zfill(bit)
+def inmToBit (bit, inmediate, inout = False):
+    val = "{:b}".format(int(inmediate)).zfill(bit)
+
+    if inout and int(inmediate) >= 0 and int(inmediate) < 4:
+        # ERROR: Si el numero no esta en el rango de 0-3 deberia dar error
+        val = val[6:] + val[:6]
+
+    return val
 
 def divideInstruction (instruction):
     return [ word.strip() for word in instruction.split() if len(word.strip()) != 0 ]
@@ -232,7 +240,8 @@ class InmediateInstruction (Instruction):
         return "{} {} {}".format(self.opcode, self.inm, self.dest)
     
     def toBinary (self):
-        return PARSER[self.opcode] + inmToBit(8, self.inm) + REGISTER[self.dest]
+        inout = (self.opcode == "IN" or self.opcode == "OUT")
+        return PARSER[self.opcode] + inmToBit(8, self.inm, inout) + REGISTER[self.dest]
 
 class AluInstruction (Instruction):
     def __init__ (self, opcode, r1, r2, rd):
