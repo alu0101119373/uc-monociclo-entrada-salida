@@ -60,6 +60,28 @@ module mux2 #(parameter WIDTH = 8)
 
 endmodule
 
+// multiplexor de 4 entradas
+module mux4 #(parameter WIDTH = 8)
+             (input wire [WIDTH-1:0] d0, d1, d2, d3,
+              input wire             s1, s2,
+              output wire [WIDTH-1:0] y);
+
+  always @(*)
+  begin
+    if (s1 == 1'b0 && s2 == 1'b0)
+      y <= d0;
+    else if (s1 == 1'b0 && s2 == 1'b1)
+      y <= d1;
+    else if (s1 == 1'b1 && s2 == 1'b0)
+      y <= d2;
+    else if (s1 == 1'b1 && s2 == 1'b1)
+      y <= d3;
+    else
+      y <= x;
+  end
+
+endmodule
+
 //Biestable para el flag de cero
 //Biestable tipo D s�ncrono con reset as�ncrono por flanco y entrada de habilitaci�n de carga
 module ffd(input wire clk, reset, d, carga, output reg q);
