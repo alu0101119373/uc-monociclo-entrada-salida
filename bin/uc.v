@@ -200,6 +200,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output r
                     wez <= 1'b0;
                     wen <= 1'b0;
                     case (opcode[5:2])
+                        // load
                         4'b1000:
                         begin
                             s_inc <= 1'b1;
@@ -212,6 +213,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output r
                             owe3 <= 1'b0;
                             owe4 <= 1'b0;
                         end
+                        // IN
                         4'b1001:
                         begin
                             s_inc <= 1'b1;
@@ -224,6 +226,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, output r
                             owe3 <= 1'b0;
                             owe4 <= 1'b0;
                         end
+                        // OUT
                         4'b1010:
                         begin
                             s_inc <= 1'b1;

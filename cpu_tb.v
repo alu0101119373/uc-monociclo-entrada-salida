@@ -16,10 +16,16 @@ begin
 end
 
 // Representacion de los 4 displays 7 seg
-wire [7:0] display [0:3];
+wire [7:0] display1;
+wire [7:0] display2;
+wire [7:0] display3;
+wire [7:0] display4;
+wire [7:0] inm;
 
 // instanciación del procesador
-cpu micpu(clk, reset, 8'b0, 8'b0, 8'b0, 8'b0, display[0], display[1], display[2], display[3]);
+cpu micpu(clk, reset, 8'b00000101, 8'b00000010, 8'b0, 8'b0, inm, display2, display3, display4);
+
+dec7seg dec(inm[3:0], display1);
 
 initial
 begin

@@ -4,10 +4,12 @@
 
 1. [Objetivo](#objetivo)
 2. [Mejoras](#mejoras)
-3. [Compilación](#compilacion)
-4. [Formato de palabra](#formatoPalabra)
-5. [Instrucciones Implementadas](#microInstrucciones)
-6. [Ejemplo del funcionamiento de la CPU monociclo base](#funcionamientoCPU)
+3. [Problemas encontrados](#problemas)
+4. [Compilación](#compilacion)
+5. [Formato de palabra](#formatoPalabra)
+6. [Instrucciones Implementadas](#microInstrucciones)
+7. [Ejemplo del funcionamiento de la CPU monociclo base](#funcionamientoCPU)
+8. [Ejemplo del funcionamiento de la CPU con E/S](#funcionamientoCPUes)
 
 ## Objetivo<a name="objetivo"></a>
 
@@ -48,6 +50,12 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 - Añadida pseudo-instrucciones `GOTO` y `RETURN` para ir a una subrutina y volver de ella respectivamente. Hacen uso de la pila para su funcionamiento.
 
+- Implementada E/S para la CPU, con dos nuevas instrucciones, `IN` y `OUT`, para la comunicación con los puertos de E/S. Solo se dispone de 4 puertos de entrada y 4 puertos de salida. Más información sobre las instrucciones en el apartado de [Instrucciones Implementadas](#microInstrucciones).
+
+## Problemas encontrados<a name="problemas"></a>
+
+- La E/S me ha costado un poco entenderla e implementarla, a pesar de ser muy fácil al final. Uno de los problemas que tiene actualmente la E/S es que, si la primera instrucción del programa es una operación E/S, esta no se produce correctamente, dando pequeños problemas. Hasta ahora, para solucionarlo, tenemos que añadir una operación inútil (como ADD R0 R0 R0) para perder ese primer ciclo de reloj y así poder corregir el problema. Plateo añadir la instrucción NOP al repertorio, que no hace nada. De esta forma, podmeos perder un ciclo de reloj.
+
 ## Compilación<a name="compilacion"></a>
 
 Para compilar el proyecto, se debe situar la terminal en la raíz del mismo y ejecutar el siguiente comando:
@@ -85,11 +93,11 @@ Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 
 Las instrucciones implementadas actualmente se representan en la siguiente tabla:
 
 ### Instrucciones de carga
-| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                               |
-| :--------------: | :----: | :---------------------------------------- |
-| **LOAD**         | 1000   | Carga un determinado valor en un registro |
-| **??**           | 1001   | ??                                        |
-| **??**           | 1010   | ??                                        |
+| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                                                           |
+| :--------------: | :----: | :-------------------------------------------------------------------- |
+| **LOAD**         | 1000   | Carga un determinado valor en un registro                             |
+| **IN**           | 1001   | Envia un valor recibido por el puerto indicado, al registro indicado  |
+| **OUT**          | 1010   | Envia un valor de un registro y lo manda al puerto indicado           |
 | **??**           | 1011   | ??                                        |
 
 ### Instrucciones de salto
@@ -185,3 +193,25 @@ El código que se ejecuta en la prueba es el siguiente:
 Como se puede observar en la captura de pantalla, se realiza un salto entre la instrucción en la dirección 11 y la 4. Esto ocurre hasta el final, en el cual acaba sumando la variable `sum` con 0, de forma que el resultado de la suma acabe en la salida de la ALU.
 
 ![Resultado en GTKWave](./img/gtkwave_ejemplo_base.png)
+
+## Ejemplo del funcionamiento de la CPU con E/S<a name="funcionamientoCPUes"></a>
+
+Este ejemplo sirve para ilustrar el correcto comportamiento de la CPU con dispositivos E/S. En este caso, se utiliza un decodificador de 7 segmentos que se encarga de traducir el dato de un registro para su correcto muestreo en el display de 7 segmentos. A continuación se ilustran los pasos que realiza el programa de prueba:
+
+### Descripción del funcionamiento del programa
+- Se carga en el registro R1 el valor recibido por el puerto 0 de entrada.
+- Se carga en el registro R2 el valor recibido por el puerto 1 de entrada.
+- Se suman los valores de los registros R1 y R2 y se guarda en R3.
+- El valor contenido en R3 se envía al puerto 0 de salida.
+
+Por tanto, el valor en el puerto 0 es cargado por el decodificador de 7 segmentos y traducido para el display 1, que en el programa de ejemplo (disponible en progfile.dat) mostraría lo equivalente a un 5.
+
+**NOTA**: Para las pruebas se puede variar los valores dispuestos en los puertos 0 y 1 de entrada, pero la suma de ambos no debe superar el 9.
+
+### Código en ensamblador y su equivalencia en binario
+ y traducido para el display 1, que en el programa de ejemplo (disponible en progfile.dat) mostraría lo equivalente a un 5.
+
+**NOTA**: Para las pruebas se puede variar los valores dispuestos en los puertos 0 y 1 de entrada, pero la suma de ambos no debe superar el 9.
+
+### Código en ensamblador y su equivalencia en binario
+---
