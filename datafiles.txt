@@ -7,3 +7,4 @@ bin/pila.v
 bin/mempila.v
 bin/sumrest.v
 bin/dec7seg.v
+bin/timer.v
