@@ -14,6 +14,8 @@ module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_p
 
     // Gestor de interrupciones
     wire intPort1, intPort2, intPort3, intPort4;
+    wire [9:0] s_gestInt;
+
     gestInterrup gestorInt (reset, intPort1, intPort2, intPort3, intPort4, finInterrup, s_gestInt, interruptionToUC);
 
     // Calculo de la entrada del pc
@@ -73,10 +75,10 @@ module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_p
     // Timer
     wire [7:0] s_registro_timer, s_mux_timer, sum_mux_timer, rest_mux_timer;
     
-    sum#(8) sum_timer(s_registro_timer, 1, sum_mux_timer);
-    rest#(8) rest_timer(s_registro_timer, 1, rest_mux_timer);
+    sum#(8) sum_timer(s_registro_timer, 8'b0000001, sum_mux_timer);
+    rest#(8) rest_timer(s_registro_timer, 8'b0000001, rest_mux_timer);
 
-    mux4 mux_timer(s_registro_timer, sum_mux_timer, rest_mux_timer, s_registro_timer, oport3[0], oport4[0], s_mux_timer);
+    mux4 mux_timer(s_registro_timer, sum_mux_timer, rest_mux_timer, s_registro_timer, s_port3[0], s_port4[0], s_mux_timer);
 
     registro regTimer(clk, reset, 1'b1, s_mux_timer, s_registro_timer);
 
