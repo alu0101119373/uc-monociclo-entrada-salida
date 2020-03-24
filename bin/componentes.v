@@ -27,10 +27,20 @@ module regfile(input  wire        clk,
 endmodule
 
 //modulo sumador  
-module sum(input  wire [9:0] a, b,
-             output wire [9:0] y);
+module sum #(parameter WIDTH = 10)
+            (input  wire [WIDTH-1:0] a, b,
+             output wire [WIDTH-1:0] y);
 
   assign y = a + b;
+
+endmodule
+
+// modulo restador
+module rest #(parameter WIDTH = 10)
+            (input  wire [WIDTH-1:0] a, b,
+             output wire [WIDTH-1:0] y);
+
+  assign y = (a == 0) ? 0 : a - b;
 
 endmodule
 
