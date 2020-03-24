@@ -52,6 +52,8 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 - Implementada E/S para la CPU, con dos nuevas instrucciones, `IN` y `OUT`, para la comunicación con los puertos de E/S. Solo se dispone de 4 puertos de entrada y 4 puertos de salida. Más información sobre las instrucciones en el apartado de [Instrucciones Implementadas](#microInstrucciones).
 
+- Implementado un timer que nos permite contar varios ciclos de reloj.
+
 ## Problemas encontrados<a name="problemas"></a>
 
 - La E/S me ha costado un poco entenderla e implementarla, a pesar de ser muy fácil al final. Uno de los problemas que tiene actualmente la E/S es que, si la primera instrucción del programa es una operación E/S, esta no se produce correctamente, dando pequeños problemas. Hasta ahora, para solucionarlo, tenemos que añadir una operación inútil (como ADD R0 R0 R0) para perder ese primer ciclo de reloj y así poder corregir el problema. Plateo añadir la instrucción NOP al repertorio, que no hace nada. De esta forma, podmeos perder un ciclo de reloj.

@@ -1,4 +1,4 @@
-module timer (input wire clk, reset, input wire [3:0] s, output reg pulse);
+module timer (input wire clk, reset, input wire [7:0] s, output reg pulse);
 
     reg [3:0] cont;
 
@@ -12,12 +12,11 @@ module timer (input wire clk, reset, input wire [3:0] s, output reg pulse);
         else
             if (cont < s)
             begin
-                pulse <= 1'b0;
                 cont = cont + 1;
             end
             else
             begin
-                pulse <= 1'b1;
+                pulse <= ~pulse;
                 cont = 0;
             end
     end

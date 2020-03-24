@@ -26,7 +26,7 @@ module dec7seg (input wire [3:0] d, output wire [7:0] q);
             4'b1001:
                 s <= 8'b01100111;
             default:
-                s <= 8'b01000000;
+                s <= 'bx;
         endcase
     end
 
