@@ -111,7 +111,7 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **POP**          | 110101 | Recupera el último dato ingresado y lo pone en PC                                       |
 | **SKZ**          | 110110 | Se salta la siguiente instrucción del programa si el flag de Z está activo              |
 | **SKNZ**         | 110111 | Se salta la siguiente instrucción del programa si el flag de Z **no** está activo       |
-| **??**           | 111000 | ??                                                                                      |
+| **FREE**         | 111000 | Instruccion para terminar una interrupción                                              |
 | **??**           | 111001 | ??                                                                                      |
 | **??**           | 111010 | ??                                                                                      |
 | **??**           | 111011 | ??                                                                                      |
