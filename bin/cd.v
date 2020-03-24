@@ -33,14 +33,9 @@ module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_p
     regfile banco_registros (clk, we3, ra1, instruccion[7:4], instruccion[3:0], wd3, rd1, rd2);
 
     // Puertos de entrada
-    wire [7:0] s_ip1, s_ip2, s_ip3, s_ip4, s_input;
+    wire [7:0] s_input;
 
-    registro iport1 (clk, reset, 1'b1, e_port1, s_ip1);
-    registro iport2 (clk, reset, 1'b1, e_port2, s_ip2);
-    registro iport3 (clk, reset, 1'b1, e_port3, s_ip3);
-    registro iport4 (clk, reset, 1'b1, e_port4, s_ip4);
-
-    mux4 mux4_input(s_ip1, s_ip2, s_ip3, s_ip4, instruccion[11], instruccion[10], s_input);
+    mux4 mux4_input(e_port1, e_port2, e_port3, e_port4, instruccion[11], instruccion[10], s_input);
 
     // Calculo de dato a escribir (wd3)
     wire [7:0] s_alu, s_mux1_wd3;
