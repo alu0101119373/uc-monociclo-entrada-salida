@@ -1,4 +1,4 @@
-module timer (input wire clk, reset, input wire [3:0] s, output reg pulse);
+module timer (input wire clk, reset, input wire [8:0] s, output reg pulse);
 
     reg [3:0] cont;
 

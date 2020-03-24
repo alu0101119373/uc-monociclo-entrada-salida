@@ -1,4 +1,4 @@
-module gestInterrup (input wire reset, iport1, iport2, iport3, iport4, fin, output reg [9:0] dir, output reg s_interrup);
+module gestInterrup (input wire reset, iport1, iport2, iport3, iport4, fin, output wire [9:0] dir, output reg s_interrup);
 
     // Direcciones de subrutina
     parameter sub1 = 10'b1111011000; // 984

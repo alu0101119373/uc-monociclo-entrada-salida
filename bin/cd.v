@@ -70,6 +70,18 @@ module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_p
     // FFN
     ffd ffn(clk, reset, nalu, wen, s_n);
 
+    // Timer
+    wire [7:0] s_registro_timer, s_mux_timer, sum_mux_timer, rest_mux_timer;
+    
+    sum#(8) sum_timer(s_registro_timer, 1, sum_mux_timer);
+    rest#(8) rest_timer(s_registro_timer, 1, rest_mux_timer);
+
+    mux4 mux_timer(s_registro_timer, sum_mux_timer, rest_mux_timer, s_registro_timer, oport3[0], oport4[0], s_mux_timer);
+
+    registro regTimer(clk, reset, 1'b1, s_mux_timer, s_registro_timer);
+
+    timer tm(clk, reset, s_registro_timer, intPort1);
+
     assign opcode = instruccion[15:10];
 
 endmodule
