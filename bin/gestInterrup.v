@@ -1,4 +1,4 @@
-module gestInterrup (input wire reset, iport1, iport2, iport3, iport4, fin, output wire [9:0] dir, output wire s_interrup);
+module gestInterrup (input wire reset, iport1, iport2, iport3, iport4, fin, output reg [9:0] dir, output reg s_interrup);
 
     // Direcciones de subrutina
     parameter sub1 = 10'b1111011000; // 984
@@ -21,29 +21,43 @@ module gestInterrup (input wire reset, iport1, iport2, iport3, iport4, fin, outp
         begin
             if (active && fin)
                 active <= 1'b0;
+            else if ((active && ~fin) || ~active)
+                s_interrup <= 1'b0;
 
             if (iport1 == 1'b1)
             begin
                 if (active == 1'b0)
+                begin
                     dirAux <= sub1;
+                    s_interrup <= 1'b1;
+                end
                 active <= 1'b1;
             end
             else if (iport2 == 1'b1)
             begin
                 if (active == 1'b0)
+                begin
                     dirAux <= sub2;
+                    s_interrup <= 1'b1;
+                end
                 active <= 1'b1;
             end
             else if (iport3 == 1'b1)
             begin
                 if (active == 1'b0)
+                begin
                     dirAux <= sub3;
+                    s_interrup <= 1'b1;
+                end
                 active <= 1'b1;
             end
             else if (iport4 == 1'b1)
             begin
                 if (active == 1'b0)
-                    dirAux <= sub4;
+                begin
+                    dirAux <= sub1;
+                    s_interrup <= 1'b1;
+                end
                 active <= 1'b1;
             end
             else
@@ -51,7 +65,6 @@ module gestInterrup (input wire reset, iport1, iport2, iport3, iport4, fin, outp
         end
     end
 
-    assign s_interrup = (iport1 || iport2 || iport3 || iport4);
     assign dir = dirAux;
 
 endmodule

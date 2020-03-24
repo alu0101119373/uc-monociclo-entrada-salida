@@ -1,4 +1,4 @@
-module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_port4, input wire s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, input wire [2:0] op_alu, output wire s_z, s_n, output wire [7:0] s_port1, s_port2, s_port3, s_port4, output wire [5:0] opcode);
+module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_port4, input wire s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, finInterrup, input wire [2:0] op_alu, output wire s_z, s_n, interruptionToUC, output wire [7:0] s_port1, s_port2, s_port3, s_port4, output wire [5:0] opcode);
 //Camino de datos de instrucciones de un solo ciclo
     wire [15:0] instruccion;
 
@@ -12,13 +12,21 @@ module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_p
 
     pila stack(clk, reset, wesp, push, pop, s_sumador_pc, s_pila);
 
+    // Gestor de interrupciones
+    wire intPort1, intPort2, intPort3, intPort4;
+    gestInterrup gestorInt (reset, intPort1, intPort2, intPort3, intPort4, finInterrup, s_gestInt, interruptionToUC);
+
     // Calculo de la entrada del pc
     sum sumador(s_pc, 10'b1, s_sumador_pc);
 
     mux2#(10) mux_sum_pal (instruccion[9:0], s_sumador_pc, s_inc, s_mux_pc);
     
     // Para conectar el registro PC con la pila
-    mux2#(10) mux_pc_stack (s_mux_pc, s_pila, pop, e_pc);
+    wire [9:0] s_mux_pc_pila;
+    mux2#(10) mux_pc_stack (s_mux_pc, s_pila, pop, s_mux_pc_pila);
+
+    // Mux para conectar el PC con el gestor de interrupciones
+    mux2#(10) mux_pc_int (s_mux_pc_pila, s_gestInt, s_interrup, e_pc);
 
     // Memoria de programa
     memprog memoria_programa(clk, s_pc, instruccion);
