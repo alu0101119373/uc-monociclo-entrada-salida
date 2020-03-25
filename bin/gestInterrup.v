@@ -1,10 +1,11 @@
 module gestInterrup (input wire reset, iport1, iport2, iport3, iport4, fin, output wire [9:0] dir, output reg s_interrup);
 
     // Direcciones de subrutina
-    parameter sub1 = 10'b1111011000; // 984
-    parameter sub2 = 10'b1111100010; // 994
-    parameter sub3 = 10'b1111101100; // 1004
-    parameter sub4 = 10'b1111110110; // 1014
+    parameter sub1 = 10'b1100111000; // 824
+    parameter sub2 = 10'b1101101010; // 874
+    parameter sub3 = 10'b1110011100; // 924
+    parameter sub4 = 10'b1111001110; // 974
+                                     // 1023 ...
 
     reg dirAux;
     reg active; // bit que se mantiene a uno hasta que la interrupcion actual termina

@@ -55,9 +55,41 @@ with open(inFile) as iFile:
 
 print("\nTotal processed instructions: {}\n".format(cont))
 
-if cont < 1024:
-    for i in range(cont+1, 1025):
+if cont < 823:
+    for i in range(cont+1, 825):
         oFile.write("0000_0000_0000_0000\n")
+
+    if path.isfile("subrutina1.dat"):
+        with open("subrutina1.dat") as subFile:
+            for line in subFile:
+                oFile.write(line)
+    else:
+        for i in range(0, 50):
+            oFile.write("0000_0000_0000_0000\n")
+
+    if path.isfile("subrutina2.dat"):
+        with open("subrutina2.dat") as subFile:
+            for line in subFile:
+                oFile.write(line)
+    else:
+        for i in range(0, 50):
+            oFile.write("0000_0000_0000_0000\n")
+
+    if path.isfile("subrutina3.dat"):
+        with open("subrutina3.dat") as subFile:
+            for line in subFile:
+                oFile.write(line)
+    else:
+        for i in range(0, 50):
+            oFile.write("0000_0000_0000_0000\n")
+
+    if path.isfile("subrutina4.dat"):
+        with open("subrutina4.dat") as subFile:
+            for line in subFile:
+                oFile.write(line)
+    else:
+        for i in range(0, 50):
+            oFile.write("0000_0000_0000_0000\n")
 
 oFile.close()
 

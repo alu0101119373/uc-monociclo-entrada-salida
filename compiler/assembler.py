@@ -16,16 +16,17 @@ PARSER = {
     "JZ"  : '110001',
     "JNZ" : '110010',
     "JN"  : '110011',
-    "PUSH": '110100',
-    "POP" : '110101',
+    "LINK": '110100',
+    "RETURN" : '110101',
     "SKZ"  : '110110',
     "SKNZ" : '110111',
+    "FREE" : '111000',
     "LOAD": '1000',
     "IN"  : '1001',
     "OUT" : '1010'
 }
 
-UNIQUE = ["PUSH", "POP", "SKZ", "SKNZ"]
+UNIQUE = ["LINK", "RETURN", "SKZ", "SKNZ", "FREE"]
 
 COMPLEX = ["BEQ", "BNE", "BGT", "BGE", "BLT", "BLE"]
 
@@ -169,10 +170,6 @@ def analyzeComplexInstruction (instruction):
         instance = BGT()
     elif instruction[0] == "BGE":
         instance = BGE()
-    elif instruction[0] == "GOTO":
-        instance = GOTO()
-    elif instruction[0] == "RETURN":
-        instance = RETURN()
 
     return instance
 
@@ -323,15 +320,3 @@ class BGE (ComplexInstruction):
         salto1 = JumpInstruction("JN", instruction[3])
         salto2 = JumpInstruction("JZ", instruction[3])
         return [resta, salto1, salto2]
-
-class GOTO (ComplexInstruction):
-    """GOTO DIR"""
-    def getNativeInstructions(self, instruction):
-        push = JumpInstruction("PUSH", "0")
-        salto = JumpInstruction("J", instruction[1])
-        return [push, salto]
-
-class RETURN (ComplexInstruction):
-    def getNativeInstructions(self, instruction):
-        pop = JumpInstruction("POP", "0")
-        return [pop]
