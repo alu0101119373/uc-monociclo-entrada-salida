@@ -59,7 +59,7 @@ if cont < 823:
     for i in range(cont+1, 825):
         oFile.write("0000_0000_0000_0000\n")
 
-    if path.isfile("subrutina1.dat"):
+    if path.isfile("subrutina1.dat") and not outFile == "subrutina1.dat":
         with open("subrutina1.dat") as subFile:
             for line in subFile:
                 oFile.write(line)
@@ -67,7 +67,7 @@ if cont < 823:
         for i in range(0, 50):
             oFile.write("0000_0000_0000_0000\n")
 
-    if path.isfile("subrutina2.dat"):
+    if path.isfile("subrutina2.dat") and not outFile == "subrutina2.dat":
         with open("subrutina2.dat") as subFile:
             for line in subFile:
                 oFile.write(line)
@@ -75,7 +75,7 @@ if cont < 823:
         for i in range(0, 50):
             oFile.write("0000_0000_0000_0000\n")
 
-    if path.isfile("subrutina3.dat"):
+    if path.isfile("subrutina3.dat") and not outFile == "subrutina3.dat":
         with open("subrutina3.dat") as subFile:
             for line in subFile:
                 oFile.write(line)
@@ -83,7 +83,7 @@ if cont < 823:
         for i in range(0, 50):
             oFile.write("0000_0000_0000_0000\n")
 
-    if path.isfile("subrutina4.dat"):
+    if path.isfile("subrutina4.dat") and not outFile == "subrutina4.dat":
         with open("subrutina4.dat") as subFile:
             for line in subFile:
                 oFile.write(line)
