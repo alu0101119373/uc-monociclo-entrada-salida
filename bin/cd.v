@@ -1,4 +1,4 @@
-module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_port4, input wire s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, finInterrup, input wire [2:0] op_alu, output wire s_z, s_n, interruptionToUC, output wire [3:0] pEntrada, output wire [7:0] s_port1, s_port2, s_port3, s_port4, output wire [5:0] opcode);
+module cd(input wire clk, reset, intPort1, intPort2, intPort3, intPort4, input wire [7:0] e_port1, e_port2, e_port3, e_port4, input wire s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, finInterrup, input wire [2:0] op_alu, output wire s_z, s_n, interruptionToUC, output wire [3:0] pEntrada, output wire [7:0] s_port1, s_port2, s_port3, s_port4, output wire [5:0] opcode);
 //Camino de datos de instrucciones de un solo ciclo
     wire [15:0] instruccion;
 
