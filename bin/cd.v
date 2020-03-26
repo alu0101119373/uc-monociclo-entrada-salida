@@ -1,4 +1,4 @@
-module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_port4, input wire s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, finInterrup, input wire [2:0] op_alu, output wire s_z, s_n, interruptionToUC, output wire [7:0] s_port1, s_port2, s_port3, s_port4, output wire [5:0] opcode);
+module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_port4, input wire s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, finInterrup, input wire [2:0] op_alu, output wire s_z, s_n, interruptionToUC, output wire [3:0] pEntrada, output wire [7:0] s_port1, s_port2, s_port3, s_port4, output wire [5:0] opcode);
 //Camino de datos de instrucciones de un solo ciclo
     wire [15:0] instruccion;
 
@@ -38,14 +38,14 @@ module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_p
     wire [3:0] ra1;
 
     // ra1 variara en funcion de si es un output o no
-    mux2#(4) mux_outp (instruccion[11:8], instruccion[3:0], s_outp, ra1);
+    mux2#(4) mux_outp (instruccion[11:8], instruccion[5:2], s_outp, ra1);
 
     regfile banco_registros (clk, we3, ra1, instruccion[7:4], instruccion[3:0], wd3, rd1, rd2);
 
     // Puertos de entrada
     wire [7:0] s_input;
 
-    mux4 mux4_input(e_port1, e_port2, e_port3, e_port4, instruccion[11], instruccion[10], s_input);
+    mux4 mux4_input(e_port1, e_port2, e_port3, e_port4, instruccion[7], instruccion[6], s_input);
 
     // Calculo de dato a escribir (wd3)
     wire [7:0] s_alu, s_mux1_wd3;
@@ -56,10 +56,14 @@ module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_p
     mux2 mux_es_alu (s_mux1_wd3, s_input, s_inp, wd3);
 
     // Puertos de salida
-    registro oport1 (clk, reset, owe1, rd1, s_port1);
-    registro oport2 (clk, reset, owe2, rd1, s_port2);
-    registro oport3 (clk, reset, owe3, rd1, s_port3);
-    registro oport4 (clk, reset, owe4, rd1, s_port4);
+    wire [7:0] s_port_salida;
+
+    mux2 mux_port_salida (rd1, instruccion[11:4], s_inm, s_port_salida);
+
+    registro oport1 (clk, reset, owe1, s_port_salida, s_port1);
+    registro oport2 (clk, reset, owe2, s_port_salida, s_port2);
+    registro oport3 (clk, reset, owe3, s_port_salida, s_port3);
+    registro oport4 (clk, reset, owe4, s_port_salida, s_port4);
 
     // ALU
     wire zalu, carry, nalu;
@@ -72,17 +76,10 @@ module cd(input wire clk, reset, input wire [7:0] e_port1, e_port2, e_port3, e_p
     // FFN
     ffd ffn(clk, reset, nalu, wen, s_n);
 
-    // Timer
-    wire [7:0] s_registro_timer, s_mux_timer, sum_mux_timer, rest_mux_timer;
-    
-    sum#(8) sum_timer(s_registro_timer, 8'b0000001, sum_mux_timer);
-    rest#(8) rest_timer(s_registro_timer, 8'b0000001, rest_mux_timer);
+    // TODO: Timer    
 
-    mux4 mux_timer(s_registro_timer, sum_mux_timer, rest_mux_timer, s_registro_timer, s_port3[0], s_port4[0], s_mux_timer);
-
-    registro regTimer(clk, reset, 1'b1, s_mux_timer, s_registro_timer);
-
-    timer tm(clk, reset, s_registro_timer, intPort1);
+    // Selector del puerto de entrada
+    mux2#(4) mux_pEntrada (instruccion[9:6], instruccion[3:0], s_inm, pEntrada);
 
     assign opcode = instruccion[15:10];
 
