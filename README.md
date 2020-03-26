@@ -74,17 +74,21 @@ Este comando compilará el proyecto y generará el fichero `cpu.out`. Para poder
 
 Para poner a prueba esta CPU monociclo, **el programa debe ser escrito en el fichero progfile.dat**, en binario y siguiendo el formato de palabra indicado.
 
-## Formato de palabra<a name="formatoPalabra"></a>
+## Formato de instruccion<a name="formatoPalabra"></a>
 
 Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 instrucciones. El formato para cada instrucción es el siguiente:
 
-- Instrucciones para salto:
+- Instrucciones para saltos:
 
 ![Palabra para instrucción de salto](./img/palSalto.png)
 
-- Instrucciones para carga inmediata
+- Instrucciones inmediatas
 
-![Palabra para instrucción de carga](./img/palLoad.png)
+![Palabra para instrucción inmediata](./img/palLoad.png)
+
+- Instrucciones I/O
+
+![Palabra para instrucción entrada-salida](./img/palIO.png)
 
 - Instrucciones para operaciones aritmético-lógica.
 
@@ -94,13 +98,18 @@ Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 
 
 Las instrucciones implementadas actualmente se representan en la siguiente tabla:
 
-### Instrucciones de carga
-| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                                                           |
-| :--------------: | :----: | :-------------------------------------------------------------------- |
-| **LOAD**         | 1000   | Carga un determinado valor en un registro                             |
-| **IN**           | 1001   | Envia un valor recibido por el puerto indicado, al registro indicado  |
-| **OUT**          | 1010   | Envia un valor de un registro y lo manda al puerto indicado           |
-| **??**           | 1011   | ??                                        |
+### Instrucciones inmediatas
+| INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                                                                                                 |
+| :--------------: | :----: | :---------------------------------------------------------------------------------------------------------- |
+| **LOAD**         | 1000   | Carga un determinado valor en un registro                                                                   |
+| **OUTI**         | 1001   | Manda al puerto de salida indicado en el apartado de registro (últimos 4 bits) el valor inmediato indicado  |
+
+### Instrucciones de I/O
+| INSTRUCCIÓN      | OPCODE   | DESCRIPCIÓN                                                                                                 |
+| :--------------: | :------: | :---------------------------------------------------------------------------------------------------------- |
+| **OUT**          | 101000   | Manda al puerto de salida el valor contenido en un registro                                                 |
+| **IN**           | 101001   | Envía el dato recibido por el puerto de entrada a un registro                                               |
+| **??**           | 101010   | ??                                                                                                          |
 
 ### Instrucciones de salto
 | INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                                                                             |
