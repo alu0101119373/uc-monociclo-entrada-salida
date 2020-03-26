@@ -24,20 +24,20 @@ while:
         LOAD 1 R9 # Registro auxiliar para comprobaciones
         BNE R1 R9 if2
         BNE R1 R0 if2
-        if1-if: # Comprobamos el valor maximo
-            BEQ R13 R6 end-if1-if
+        if1_if: # Comprobamos el valor maximo
+            BEQ R13 R6 end_if1_if
             ADD R13 R14 R13
-        end-if1-if:
+        end_if1_if:
         J endif
 
     if2:
         LOAD 1 R9
         BNE R3 R9 endif
         BNE R4 R0 endif
-        if2-if: # Comprobamos el valor minimo
-            BEQ R13 R5 end-if2-if
+        if2_if: # Comprobamos el valor minimo
+            BEQ R13 R5 end_if2_if
             SUB R13 R14 R13
-        end-if2-if:
+        end_if2_if:
     endif:
 
     # Mandamos el tiempo de pulso al timer
