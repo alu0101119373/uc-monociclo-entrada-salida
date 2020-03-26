@@ -322,7 +322,6 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                         else if (opcode[5:3] == 3'b101)
                         begin
                             case (opcode)
-                            begin
                                 // OUT
                                 6'b101000:
                                 begin
@@ -382,7 +381,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                     owe3 <= 1'b0;
                                     owe4 <= 1'b0;
                                 end
-                            end
+                            endcase
                         end
                     end
                 end

@@ -25,7 +25,7 @@ wire pInt1, pInt2, pInt3, pInt4;
 cpu micpu(clk, reset, pInt1, pInt2, pInt3, pInt4, iport1, iport2, iport3, iport4, oport1, oport2, oport3, oport4);
 
 // Timer
-timer tm(clk, reset, port4, pInt1);
+timer tm(clk, reset, oport4, pInt1);
 
 // Asignaciones
 assign led1 = oport1[0];

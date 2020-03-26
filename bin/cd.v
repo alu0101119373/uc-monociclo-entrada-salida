@@ -13,7 +13,6 @@ module cd(input wire clk, reset, intPort1, intPort2, intPort3, intPort4, input w
     pila stack(clk, reset, wesp, push, pop, s_sumador_pc, s_pila);
 
     // Gestor de interrupciones
-    wire intPort1, intPort2, intPort3, intPort4;
     wire [9:0] s_gestInt;
 
     gestInterrup gestorInt (reset, intPort1, intPort2, intPort3, intPort4, finInterrup, s_gestInt, interruptionToUC);

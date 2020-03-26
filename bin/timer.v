@@ -1,9 +1,6 @@
-module timer (input wire clk, reset, input wire [7:0] s, output reg pulse);
+module timer (input wire clk, reset, input wire [7:0] limit, output reg pulse);
 
     reg [3:0] cont;
-    wire [7:0] limit;
-
-    assign limit = (s < 8'b5 ? 5 : s);
 
     always @(posedge clk)
     begin
