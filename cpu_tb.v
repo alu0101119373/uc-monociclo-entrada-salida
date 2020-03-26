@@ -16,16 +16,22 @@ begin
 end
 
 // Representacion de los 4 displays 7 seg
-wire [7:0] display1;
-wire [7:0] display2;
-wire [7:0] display3;
-wire [7:0] display4;
-wire [7:0] inm;
+wire led1, led2, led3, led4;
+wire [7:0] iport1, iport2, iport3, iport4;
+wire [7:0] oport1, oport2, oport3, oport4;
+wire pInt1, pInt2, pInt3, pInt4;
 
 // instanciación del procesador
-cpu micpu(clk, reset, 8'b00000101, 8'b00000010, 8'b0, 8'b0, inm, display2, display3, display4);
+cpu micpu(clk, reset, pInt1, pInt2, pInt3, pInt4, iport1, iport2, iport3, iport4, oport1, oport2, oport3, oport4);
 
-dec7seg dec(inm[3:0], display1);
+// Timer
+timer tm(clk, reset, port4, pInt1);
+
+// Asignaciones
+assign led1 = oport1[0];
+assign led2 = oport1[1];
+assign led3 = oport1[2];
+assign led4 = oport1[3];
 
 initial
 begin
