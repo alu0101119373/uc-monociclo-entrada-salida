@@ -82,17 +82,25 @@ Como se ha mencionado antes, esta CPU es capaz de trabajar con un máximo de 64 
 
 ![Palabra para instrucción de salto](./img/palSalto.png)
 
+Estas instrucciones corresponden a los OPCODE que empiezan por 11 (16 instrucciones).
+
 - Instrucciones inmediatas
 
 ![Palabra para instrucción inmediata](./img/palLoad.png)
+
+Estas instruciones empiezan por 100 (2 instrucciones).
 
 - Instrucciones I/O
 
 ![Palabra para instrucción entrada-salida](./img/palIO.png)
 
+Son aquellas instrucciones cuyos OPCODE empiezan por 101 (8 instrucciones).
+
 - Instrucciones para operaciones aritmético-lógica.
 
 ![Palabra para instrucción de la ALU](./img/palALU.png)
+
+Estas instrucciones empienzan por 0 (8 instrucciones).
 
 ## Instrucciones implementadas<a name="microInstrucciones"></a>
 
@@ -110,6 +118,11 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **OUT**          | 101000   | Manda al puerto de salida el valor contenido en un registro                                                 |
 | **IN**           | 101001   | Envía el dato recibido por el puerto de entrada a un registro                                               |
 | **??**           | 101010   | ??                                                                                                          |
+| **??**           | 101011   | ??                                                                                                          |
+| **??**           | 101100   | ??                                                                                                          |
+| **??**           | 101101   | ??                                                                                                          |
+| **??**           | 101110   | ??                                                                                                          |
+| **??**           | 101111   | ??                                                                                                          |
 
 ### Instrucciones de salto
 | INSTRUCCIÓN      | OPCODE | DESCRIPCIÓN                                                                             |
