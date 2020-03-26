@@ -21,7 +21,7 @@ El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implem
 - Posee una memoria de programa con un máximo de 1024 instrucciones. Esto implica que el programa que se desee ejecutar debe tener un máximo de 1024 instrucciones.
 - El camino de datos de esta CPU es el siguiente:
 
-![Camino de datos de la CPU monociclo base](./img/cdCPUBase.png)
+![Camino de datos de la CPU monociclo base](./img/cdCPUModificada.png)
 
 ## Mejoras<a name="mejoras"></a>
 
