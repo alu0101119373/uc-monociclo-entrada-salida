@@ -17,15 +17,27 @@ end
 
 // Representacion de los 4 displays 7 seg
 wire led1, led2, led3, led4;
-wire [7:0] iport1, iport2, iport3, iport4;
+reg [7:0] iport1, iport2, iport4;
 wire [7:0] oport1, oport2, oport3, oport4;
 wire pInt1, pInt2, pInt3, pInt4;
+
+wire [7:0] iport3;
+
+//assign iport3 = 8'b00000001;
+always
+begin
+#(30*60) // esperamos 30 ciclos
+iport4 = 8'b1;
+#(30*60) // esperamos 30 ciclos
+iport4 = 8'b0;
+end
+assign iport3 = 8'b0;
 
 // instanciación del procesador
 cpu micpu(clk, reset, pInt1, pInt2, pInt3, pInt4, iport1, iport2, iport3, iport4, oport1, oport2, oport3, oport4);
 
 // Timer
-timer tm(clk, reset, oport4, pInt1);
+// timer tm(clk, reset, oport4, pInt1);
 
 // Asignaciones
 assign led1 = oport1[0];
@@ -37,6 +49,7 @@ initial
 begin
   $dumpfile("cpu_tb.vcd");
   $dumpvars;
+  iport4 = 8'b0;
   reset = 1;  //a partir del flanco de subida del reset empieza el funcionamiento normal
   #10;
   reset = 0;  //bajamos el reset 
@@ -44,7 +57,7 @@ end
 
 initial
 begin
-  #(100*60);  //Esperamos 100 ciclos o 100 instrucciones
+  #(1000*60);  //Esperamos 1000 ciclos o 1000 instrucciones
   $finish;
 end
 

@@ -4,26 +4,27 @@ import re
 import os
 
 PARSER = {
-    "ADD" : '0010',
-    "SUB" : '0011',
-    "AND" : '0100',
-    "OR"  : '0101',
-    "NOT" : '0001',
-    "SELF": '0000',
-    "NFOP": '0110',
-    "NSOP": '0111',
-    "J"   : '110000',
-    "JZ"  : '110001',
-    "JNZ" : '110010',
-    "JN"  : '110011',
-    "LINK": '110100',
+    "ADD"    : '0010',
+    "SUB"    : '0011',
+    "AND"    : '0100',
+    "OR"     : '0101',
+    "NOT"    : '0001',
+    "SELF"   : '0000',
+    "NFOP"   : '0110',
+    "NSOP"   : '0111',
+    "J"      : '110000',
+    "JZ"     : '110001',
+    "JNZ"    : '110010',
+    "JN"     : '110011',
+    "LINK"   : '110100',
     "RETURN" : '110101',
-    "SKZ"  : '110110',
-    "SKNZ" : '110111',
-    "FREE" : '111000',
-    "LOAD": '1000',
-    "IN"  : '1001',
-    "OUT" : '1010'
+    "SKZ"    : '110110',
+    "SKNZ"   : '110111',
+    "FREE"   : '111000',
+    "LOAD"   : '1000',
+    "OUTI"   : '1001',
+    "OUT"    : '101000',
+    "IN"    : '101001',
 }
 
 UNIQUE = ["LINK", "RETURN", "SKZ", "SKNZ", "FREE"]
@@ -140,13 +141,8 @@ def formatBinaryInstruction(bInstruction):
         print("ERROR!")
     return result
 
-def inmToBit (bit, inmediate, inout = False):
+def inmToBit (bit, inmediate):
     val = "{:b}".format(int(inmediate)).zfill(bit)
-
-    if inout and int(inmediate) >= 0 and int(inmediate) < 4:
-        # ERROR: Si el numero no esta en el rango de 0-3 deberia dar error
-        val = val[6:] + val[:6]
-
     return val
 
 def divideInstruction (instruction):
@@ -176,11 +172,16 @@ def analyzeComplexInstruction (instruction):
 def process (instruction):
     if instruction[0] in PARSER:
         opcode = PARSER[instruction[0]]
-        if opcode[:2] == "10":
+        if opcode[:3] == "100":
             if len(instruction) != 3:
                 print("ERROR! Inmediate instruction has too many arguments (expected 2, got {})".format(len(instruction) - 1))
                 exit()
             return InmediateInstruction(instruction[0], instruction[1], instruction[2])
+        if opcode[:3] == "101":
+            if len(instruction) != 3:
+                print("ERROR! IO instruction has too many arguments (expected 2, got {})".format(len(instruction) - 1))
+                exit()
+            return IOInstruction(instruction[0], instruction[1], instruction[2])
         elif opcode[:2] == "11":
             if len(instruction) != 2 and not instruction[0] in UNIQUE:
                 print("ERROR! Jump instruction has too many arguments (expected 1, got {}".format(len(instruction) - 1))
@@ -237,8 +238,19 @@ class InmediateInstruction (Instruction):
         return "{} {} {}".format(self.opcode, self.inm, self.dest)
     
     def toBinary (self):
-        inout = (self.opcode == "IN" or self.opcode == "OUT")
-        return PARSER[self.opcode] + inmToBit(8, self.inm, inout) + REGISTER[self.dest]
+        return PARSER[self.opcode] + inmToBit(8, self.inm) +  (REGISTER[self.dest] if self.opcode != "OUTI" else inmToBit(4, self.dest))
+
+class IOInstruction (Instruction):
+    def __init__(self, opcode, port, dest):
+        super().__init__(opcode)
+        self.port = port
+        self.dest = dest
+    
+    def __str__(self):
+        return "{} {} {}".format(self.opcode, self.port, self.dest)
+    
+    def toBinary(self):
+        return PARSER[self.opcode] + inmToBit(4, self.port) + REGISTER[self.dest] + "00"
 
 class AluInstruction (Instruction):
     def __init__ (self, opcode, r1, r2, rd):

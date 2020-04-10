@@ -1,3 +1,4 @@
+`timescale 1 ns / 10 ps
 module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interrup, input wire [3:0] pEntrada, output reg s_inc, s_inm, we3, wez, wen, wesp, bp, push, pop, s_inp, s_outp, owe1, owe2, owe3, owe4, finInterrup, output reg [2:0] op_alu);
 
     // Flag interno para el skip
@@ -27,7 +28,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
     begin
         if (s_interrup)
         begin
-            s_inc <= 1'b0;
+            // s_inc <= 1'b0;
             s_inm <= 1'b0;
             we3 <= 1'b0;
             wez <= 1'b0;
@@ -44,9 +45,9 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
         end
         else
         begin
-            finInterrup <= 1'b0;
             if (skip == 1'b1)
             begin
+                finInterrup <= 1'b0;
                 s_inc <= 1'b1;
                 s_inm <= 1'b0;
                 we3 <= 1'b0;
@@ -184,13 +185,14 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                 skip <= 1'b1;
                             finInterrup <= 1'b0;
                         end
+                        // FREE
                         6'b111000:
                         begin
                             s_inc <= 1'b0;
                             s_inm <= 1'b0;
                             we3 <= 1'b0;
-                            wez <= 1'b0;
-                            wen <= 1'b0;
+                            wez <= 1'b1;
+                            wen <= 1'b1;
                             wesp <= 1'b0;
                             pop <= 1'b1;
                             push <= 1'b0;
@@ -270,7 +272,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                     case (pEntrada)
                                         4'b0000:
                                         begin
-                                            owe1 <= 1'b1;
+                                            owe1 <= #1 1'b1;
                                             owe2 <= 1'b0;
                                             owe3 <= 1'b0;
                                             owe4 <= 1'b0;
@@ -278,7 +280,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                         4'b0001:
                                         begin
                                             owe1 <= 1'b0;
-                                            owe2 <= 1'b1;
+                                            owe2 <= #1 1'b1;
                                             owe3 <= 1'b0;
                                             owe4 <= 1'b0;
                                         end
@@ -286,7 +288,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                         begin
                                             owe1 <= 1'b0;
                                             owe2 <= 1'b0;
-                                            owe3 <= 1'b1;
+                                            owe3 <= #1 1'b1;
                                             owe4 <= 1'b0;
                                         end
                                         4'b0011:
@@ -294,7 +296,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                             owe1 <= 1'b0;
                                             owe2 <= 1'b0;
                                             owe3 <= 1'b0;
-                                            owe4 <= 1'b1;
+                                            owe4 <= #1 1'b1;
                                         end
                                         default:
                                         begin
@@ -333,7 +335,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                     case (pEntrada)
                                         4'b0000:
                                         begin
-                                            owe1 <= 1'b1;
+                                            owe1 <= #1 1'b1;
                                             owe2 <= 1'b0;
                                             owe3 <= 1'b0;
                                             owe4 <= 1'b0;
@@ -341,7 +343,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                         4'b0001:
                                         begin
                                             owe1 <= 1'b0;
-                                            owe2 <= 1'b1;
+                                            owe2 <= #1 1'b1;
                                             owe3 <= 1'b0;
                                             owe4 <= 1'b0;
                                         end
@@ -349,7 +351,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                         begin
                                             owe1 <= 1'b0;
                                             owe2 <= 1'b0;
-                                            owe3 <= 1'b1;
+                                            owe3 <= #1 1'b1;
                                             owe4 <= 1'b0;
                                         end
                                         4'b0011:
@@ -357,7 +359,7 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                                             owe1 <= 1'b0;
                                             owe2 <= 1'b0;
                                             owe3 <= 1'b0;
-                                            owe4 <= 1'b1;
+                                            owe4 <= #1 1'b1;
                                         end
                                         default:
                                         begin

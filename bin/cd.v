@@ -8,14 +8,14 @@ module cd(input wire clk, reset, intPort1, intPort2, intPort3, intPort4, input w
     registro#(10) pc(clk, reset, 1'b1, e_pc, s_pc);
 
     // Pila
-    wire [9:0] s_pila, s_sumador_pc;
+    wire [9:0] s_pila, s_sumador_pc, e_pila;
 
-    pila stack(clk, reset, wesp, push, pop, s_sumador_pc, s_pila);
+    pila stack(clk, reset, wesp, push, pop, e_pila, s_pila);
 
     // Gestor de interrupciones
     wire [9:0] s_gestInt;
 
-    gestInterrup gestorInt (reset, intPort1, intPort2, intPort3, intPort4, finInterrup, s_gestInt, interruptionToUC);
+    gestInterrup gestorInt (clk, reset, intPort1, intPort2, intPort3, intPort4, finInterrup, s_gestInt, interruptionToUC);
 
     // Calculo de la entrada del pc
     sum sumador(s_pc, 10'b1, s_sumador_pc);
@@ -25,21 +25,24 @@ module cd(input wire clk, reset, intPort1, intPort2, intPort3, intPort4, input w
     // Para conectar el registro PC con la pila
     wire [9:0] s_mux_pc_pila;
     mux2#(10) mux_pc_stack (s_mux_pc, s_pila, pop, s_mux_pc_pila);
+    mux2#(10) mux_corrector_int (s_sumador_pc, s_mux_pc_pila, (interruptionToUC & ~s_inc), e_pila);
 
     // Mux para conectar el PC con el gestor de interrupciones
-    mux2#(10) mux_pc_int (s_mux_pc_pila, s_gestInt, s_interrup, e_pc);
+    mux2#(10) mux_pc_int (s_mux_pc_pila, s_gestInt, interruptionToUC, e_pc);
 
     // Memoria de programa
     memprog memoria_programa(clk, s_pc, instruccion);
 
     // Banco de registros
     wire [7:0] wd3, rd1, rd2;
-    wire [3:0] ra1;
+    wire [3:0] ra1, wa3;
 
     // ra1 variara en funcion de si es un output o no
-    mux2#(4) mux_outp (instruccion[11:8], instruccion[5:2], s_outp, ra1);
+    mux2#(4) mux_outp_regfile (instruccion[11:8], instruccion[5:2], s_outp, ra1);
 
-    regfile banco_registros (clk, we3, ra1, instruccion[7:4], instruccion[3:0], wd3, rd1, rd2);
+    mux2#(4) mux_inpt_regfile (instruccion[3:0], instruccion[5:2], s_inp, wa3);
+
+    regfile banco_registros (clk, we3, ra1, instruccion[7:4], wa3, wd3, rd1, rd2);
 
     // Puertos de entrada
     wire [7:0] s_input;
@@ -70,12 +73,30 @@ module cd(input wire clk, reset, intPort1, intPort2, intPort3, intPort4, input w
     alu uni_art_log(rd1, rd2, op_alu, bp, carry, s_alu, nalu, zalu);
 
     // FFZ
-    ffd ffz(clk, reset, zalu, wez, s_z);
+    wire e_ffz;
+
+    ffd ffz(clk, reset, e_ffz, wez, s_z);
+
+    // Valor de FFZ auxiliar para interrupciones
+    wire s_auxz;
+
+    ffd ffzAux(clk, reset, s_z, interruptionToUC, s_auxz);
+
+    // Multiplexor para ffz
+    mux2#(1) mux_ffz(zalu, s_auxz, finInterrup, e_ffz);
 
     // FFN
-    ffd ffn(clk, reset, nalu, wen, s_n);
+    wire e_ffn;
 
-    // TODO: Timer    
+    ffd ffn(clk, reset, e_ffn, wen, s_n);
+
+    // Valor de FFN auxiliar para interrupciones
+    wire s_auxn;
+
+    ffd ffnAux (clk, reset, s_n, interruptionToUC, s_auxn);
+
+    // Multiplexor para ffn
+    mux2#(1) mux_ffn(nalu, s_auxn, finInterrup, e_ffn);
 
     // Selector del puerto de entrada
     mux2#(4) mux_pEntrada (instruccion[9:6], instruccion[3:0], s_inm, pEntrada);

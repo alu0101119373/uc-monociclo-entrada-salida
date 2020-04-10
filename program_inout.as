@@ -4,17 +4,21 @@
 #####################################
 
 # Datos iniciales
-LOAD 5 R13 # Valor inicial del timer
-LOAD 5 R14
+LOAD 50 R13 # Valor inicial del timer
+LOAD 50 R14 # Valor de suma/resta para el timer
 LOAD 1 R15
-LOAD 5 R5  # Valor minimo valido para la velocidad del timer
-LOAD 25 R6 # Valor maximo valido para la velocidad del timer
+LOAD 50 R5  # Valor minimo valido para la velocidad del timer
+LOAD 250 R6 # Valor maximo valido para la velocidad del timer
+
+# Carga inicial al timer
+OUTI 50 3
+
+# Valores iniciales
+LOAD 0 R1
+LOAD 0 R3
 
 # Bucle para control de los botones
 while:
-    # Actualizamos las entradas
-    ADD R2 R0 R1
-    ADD R3 R4 R0
     
     IN 2 R2
     IN 3 R4
@@ -23,7 +27,7 @@ while:
     if1:
         LOAD 1 R9 # Registro auxiliar para comprobaciones
         BNE R1 R9 if2
-        BNE R1 R0 if2
+        BNE R2 R0 if2
         if1_if: # Comprobamos el valor maximo
             BEQ R13 R6 end_if1_if
             ADD R13 R14 R13
@@ -35,11 +39,15 @@ while:
         BNE R3 R9 endif
         BNE R4 R0 endif
         if2_if: # Comprobamos el valor minimo
-            BEQ R13 R5 end_if2_if
+            BEQ R13 R5 endif
             SUB R13 R14 R13
-        end_if2_if:
     endif:
 
     # Mandamos el tiempo de pulso al timer
     OUT 3 R13
+
+    # Actualizamos las entradas
+    ADD R2 R0 R1
+    ADD R0 R4 R3
+
     J while
