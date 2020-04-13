@@ -37,6 +37,25 @@ cpu micpu(clk, reset, pInt1, pInt2, pInt3, pInt4, iport1, iport2, iport3, iport4
 // Timer
 timer tm(clk, reset, oport4, pInt1);
 
+// TEST
+initial
+begin
+  iport3 = 1'b0;
+  iport4 = 1'b0;
+  #(30*60)
+  iport3 = 1'b1;
+  #(30*60)
+  iport3 = 1'b0;
+  #(60*60)
+  iport4 = 1'b1;
+  #(15*60)
+  iport4 = 1'b0;
+  #(15*60)
+  iport4 = 1'b1;
+  #(15*60)
+  iport4 = 1'b0;
+end
+
 // Asignaciones
 assign led1 = oport1[0];
 assign led2 = oport1[1];
@@ -47,8 +66,6 @@ initial
 begin
   $dumpfile("cpu_tb.vcd");
   $dumpvars;
-  iport3 = 8'b0;
-  iport4 = 8'b0;
   reset = 1;  //a partir del flanco de subida del reset empieza el funcionamiento normal
   #10;
   reset = 0;  //bajamos el reset 
@@ -56,7 +73,7 @@ end
 
 initial
 begin
-  #(1000*60);  //Esperamos 1000 ciclos o 1000 instrucciones
+  #(270*60);  //Esperamos 270 ciclos o 270 instrucciones
   $finish;
 end
 

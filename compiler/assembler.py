@@ -102,9 +102,9 @@ def processComplexInstructions (filename):
                     ofile.write(line)
     return resultFile
 
-def processTags (filename):
+def processTags (filename, subrutine = 0):
     resultFile = "/tmp/{}.tags".format(getFileName(filename))
-    tags = readTags(filename)
+    tags = readTags(filename, subrutine)
     with open(filename) as ifile:
         with open(resultFile, 'w') as ofile:
             for line in ifile:
@@ -122,7 +122,7 @@ def processTags (filename):
     return resultFile
 
 
-def readTags (filename):
+def readTags (filename, subrutine = 0):
     dic = {}
     with open(filename) as file:
         cont = 0
@@ -130,7 +130,7 @@ def readTags (filename):
             if re.search(regexTag, line) != None:
                 cont += 1
                 key = line.strip()[:line.index(':')]
-                dic[key] = index - cont + 1
+                dic[key] = index - cont + 1 + subrutine
     return dic
 
 def formatBinaryInstruction(bInstruction):

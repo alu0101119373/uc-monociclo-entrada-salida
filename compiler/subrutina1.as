@@ -24,7 +24,11 @@ if4:
     LOAD 8 R10
     BNE R15 R10 endif
     LOAD 1 R15
-
+    J endif
+if5:
+    # IF R15 == 0
+    BNE R15 R0 endif
+    LOAD 1 R15
 endif:
 
 # Enviamos el resultado a los leds
