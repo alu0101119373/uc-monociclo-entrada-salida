@@ -99,10 +99,10 @@ module cd(input wire clk, reset, intPort1, intPort2, intPort3, intPort4, input w
     ffd ffnAux (clk, reset, effn, interruptionToUC, s_auxn);
 
     // Multiplexor para salida de ffn
-    mux2#(1) mux_ffn(sffn, s_auxn, finInterrup, s_n);
+    mux2#(1) mux_sffn(sffn, s_auxn, finInterrup, s_n);
 
     // Multiplexor para entrada de ffn
-    mux2#(1) mux_ffn(nalu, s_auxn, finInterrup, effn);
+    mux2#(1) mux_effn(nalu, s_auxn, finInterrup, effn);
 
     // Selector del puerto de entrada
     mux2#(4) mux_pEntrada (instruccion[9:6], instruccion[3:0], s_inm, pEntrada);
