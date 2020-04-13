@@ -73,30 +73,36 @@ module cd(input wire clk, reset, intPort1, intPort2, intPort3, intPort4, input w
     alu uni_art_log(rd1, rd2, op_alu, bp, carry, s_alu, nalu, zalu);
 
     // FFZ
-    wire e_ffz;
+    wire sffz, effz;
 
-    ffd ffz(clk, reset, e_ffz, wez, s_z);
+    ffd ffz(clk, reset, effz, wez, sffz);
 
     // Valor de FFZ auxiliar para interrupciones
     wire s_auxz;
 
-    ffd ffzAux(clk, reset, s_z, interruptionToUC, s_auxz);
+    ffd ffzAux(clk, reset, effz, interruptionToUC, s_auxz);
 
-    // Multiplexor para ffz
-    mux2#(1) mux_ffz(zalu, s_auxz, finInterrup, e_ffz);
+    // Multiplexor para entrada de ffz
+    mux2#(1) mux_effz(zalu, s_auxz, finInterrup, effz);
+
+    // Multiplexor para salida de ffz
+    mux2#(1) mux_sffz(sffz, s_auxz, finInterrup, s_z);
 
     // FFN
-    wire e_ffn;
+    wire sffn, effn;
 
-    ffd ffn(clk, reset, e_ffn, wen, s_n);
+    ffd ffn(clk, reset, effn, wen, sffn);
 
     // Valor de FFN auxiliar para interrupciones
     wire s_auxn;
 
-    ffd ffnAux (clk, reset, s_n, interruptionToUC, s_auxn);
+    ffd ffnAux (clk, reset, effn, interruptionToUC, s_auxn);
 
-    // Multiplexor para ffn
-    mux2#(1) mux_ffn(nalu, s_auxn, finInterrup, e_ffn);
+    // Multiplexor para salida de ffn
+    mux2#(1) mux_ffn(sffn, s_auxn, finInterrup, s_n);
+
+    // Multiplexor para entrada de ffn
+    mux2#(1) mux_ffn(nalu, s_auxn, finInterrup, effn);
 
     // Selector del puerto de entrada
     mux2#(4) mux_pEntrada (instruccion[9:6], instruccion[3:0], s_inm, pEntrada);
