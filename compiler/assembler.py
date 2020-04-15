@@ -27,7 +27,7 @@ PARSER = {
     "IN"    : '101001',
 }
 
-UNIQUE = ["LINK", "RETURN", "SKZ", "SKNZ", "FREE"]
+UNIQUE = ["RETURN", "SKZ", "SKNZ", "FREE"]
 
 COMPLEX = ["BEQ", "BNE", "BGT", "BGE", "BLT", "BLE"]
 

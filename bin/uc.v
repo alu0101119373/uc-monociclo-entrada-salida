@@ -133,9 +133,10 @@ module uc(input wire clk, input wire [5:0] opcode, input wire s_z, s_n, s_interr
                             pop <= 1'b0;
                             finInterrup <= 1'b0;
                         end
+                        // PUSH / LINK
                         6'b110100:
                         begin
-                            s_inc <= 1'b1;
+                            s_inc <= 1'b0;
                             s_inm <= 1'b0;
                             we3 <= 1'b0;
                             wez <= 1'b0;
