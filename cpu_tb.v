@@ -21,21 +21,17 @@ reg [7:0] iport1, iport2, iport3, iport4;
 wire [7:0] oport1, oport2, oport3, oport4;
 wire pInt1, pInt2, pInt3, pInt4;
 
-//assign iport3 = 8'b00000001;
-// always
-// begin
-// #(30*60) // esperamos 30 ciclos
-// iport4 = 8'b1;
-// #(30*60) // esperamos 30 ciclos
-// iport4 = 8'b0;
-// end
-// assign iport3 = 8'b0;
-
 // instanciación del procesador
 cpu micpu(clk, reset, pInt1, pInt2, pInt3, pInt4, iport1, iport2, iport3, iport4, oport1, oport2, oport3, oport4);
 
 // Timer
-timer tm(clk, reset, oport4, pInt1);
+wire outTimer;
+timer tm(clk, reset, oport4, outTimer);
+
+wire pulse = 1'b0;
+
+// Modulo para iterar entre diferentes outputs
+acc selectorSalida(reset, outTimer, pulse, pInt1, pInt2, pInt3, pInt4);
 
 // TEST
 initial
