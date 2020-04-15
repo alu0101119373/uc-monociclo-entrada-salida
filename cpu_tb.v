@@ -25,13 +25,9 @@ wire pInt1, pInt2, pInt3, pInt4;
 cpu micpu(clk, reset, pInt1, pInt2, pInt3, pInt4, iport1, iport2, iport3, iport4, oport1, oport2, oport3, oport4);
 
 // Timer
-wire outTimer;
-timer tm(clk, reset, oport4, outTimer);
+timer tm(clk, reset, oport4, pInt1);
 
 wire pulse = 1'b0;
-
-// Modulo para iterar entre diferentes outputs
-acc selectorSalida(reset, outTimer, pulse, pInt1, pInt2, pInt3, pInt4);
 
 // TEST
 initial
@@ -50,6 +46,11 @@ begin
   iport4 = 1'b1;
   #(15*60)
   iport4 = 1'b0;
+end
+
+initial
+begin
+  iport1 = 1'b0;
 end
 
 // Asignaciones

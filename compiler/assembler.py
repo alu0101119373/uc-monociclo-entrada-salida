@@ -200,6 +200,7 @@ def process (instruction):
             exit()        
     else:
         print("ERROR! Instruction not recognized")
+        exit()
 
 # CLASES Y JERARQUIA DEL PATRON STRATEGY
 

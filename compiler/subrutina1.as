@@ -7,4 +7,20 @@
 
 if0:
     BNE R7 R0 if1
-    
+    LINK 50
+    J endif
+if1:
+    LOAD 1 R10
+    BNE R7 R10 if2
+    LINK 75
+    J endif
+if2:
+    LOAD 2 R10
+    BNE R7 R10 if3
+    LINK 100
+    J endif
+if3:
+    LOAD 3 R10
+    BNE R7 R10 endif
+    LINK 125
+endif:

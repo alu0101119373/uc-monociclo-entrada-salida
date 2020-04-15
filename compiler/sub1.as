@@ -35,4 +35,4 @@ endif:
 
 # Enviamos el resultado a los leds
 OUT 0 R15
-POP
+RETURN

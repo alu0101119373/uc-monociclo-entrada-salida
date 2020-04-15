@@ -5,14 +5,19 @@ import sys
 from os import path
 
 MAX_PROGRAM_SIZE = 1024
+SUBRUTINES = [0,1,2,3,4]
 
-if len(sys.argv) != 4:
-    print("ERROR! The compiler only takes three parameters!")
+if len(sys.argv) > 5:
+    print("ERROR! The compiler only takes four parameters!")
     exit()
 
-subrutine = sys.argv[1]
+subrutine = int(sys.argv[1])
 inFile = sys.argv[2]
 outFile = sys.argv[3]
+
+if not subrutine in SUBRUTINES:
+    print("ERROR! Subrutine must be from 1 to 4")
+    exit()
 
 if not path.exists(inFile):
     print("ERROR! File does not exist!")
@@ -34,7 +39,12 @@ inFile = ass.processComplexInstructions(inFile)
 
 print("Processing tags...")
 
-if int(subrutine) == 1:
+fill = subrutine != 0
+
+if int(subrutine) == 0:
+    desp = int(sys.argv[4])
+    subrutine = desp
+elif int(subrutine) == 1:
     subrutine = 824
 elif int(subrutine) == 2:
     subrutine = 874
@@ -66,11 +76,15 @@ with open(inFile) as iFile:
             cont += 1
             print(binary)
 
-print("\nTotal processed instructions: {}\n".format(cont))
+print("\nTotal processed instructions: {}".format(cont))
 
-if cont < 50:
-    for i in range(cont+1, 51):
-        oFile.write("0000_0000_0000_0000\n")
+if fill:
+    if cont < 50:
+        for i in range(cont+1, 51):
+            oFile.write("0000_0000_0000_0000\n")
+            cont += 1
+
+print("\t(from line {} to line {})\n".format(subrutine, subrutine+cont-1))
 
 oFile.close()
 

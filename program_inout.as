@@ -16,14 +16,29 @@ OUTI 50 3
 # Valores iniciales
 LOAD 0 R1
 LOAD 0 R3
+LOAD 0 R7 # Registro que indica el tipo de recorrido
 
 # Bucle para control de los botones
 while:
     
-    IN 2 R2
-    IN 3 R4
+    # Cargamos los valores del pulsador
+    IN 2 R2 # incremento
+    IN 3 R4 # decremento
+    IN 0 R8 # tipo de recorrido
 
     # Comprobamos los botones de incremento y decremento
+    if0:
+        LOAD 1 R9
+        BNE R8 R0 if1
+        BNE R11 R9 if1
+            LOAD 3 R9
+            if0_if1:
+                BNE R7 R9 else_if0_if1
+                LOAD 0 R7
+            else_if0_if1:
+                LOAD 1 R9
+                ADD R7 R9 R7
+            J endif
     if1:
         LOAD 1 R9 # Registro auxiliar para comprobaciones
         BNE R1 R9 if2
@@ -33,7 +48,6 @@ while:
             ADD R13 R14 R13
         end_if1_if:
         J endif
-
     if2:
         LOAD 1 R9
         BNE R3 R9 endif
@@ -49,5 +63,6 @@ while:
     # Actualizamos las entradas
     ADD R2 R0 R1
     ADD R0 R4 R3
+    ADD R8 R0 R11
 
     J while
