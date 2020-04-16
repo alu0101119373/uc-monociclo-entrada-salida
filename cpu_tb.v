@@ -50,6 +50,16 @@ end
 
 initial
 begin
+  iport1 = 1'b1;
+  #(30*60)
+  iport1 = 1'b0;
+  #(30*60)
+  iport1 = 1'b1;
+  #(30*60)
+  iport1 = 1'b0;
+  #(30*60)
+  iport1 = 1'b1;
+  #(30*60)
   iport1 = 1'b0;
 end
 
@@ -70,7 +80,7 @@ end
 
 initial
 begin
-  #(270*60);  //Esperamos 270 ciclos o 270 instrucciones
+  #(1000*60);  //Esperamos 270 ciclos o 270 instrucciones
   $finish;
 end
 

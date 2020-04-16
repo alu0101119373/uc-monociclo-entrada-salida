@@ -35,10 +35,11 @@ while:
             if0_if1:
                 BNE R7 R9 else_if0_if1
                 LOAD 0 R7
+                J endif
             else_if0_if1:
                 LOAD 1 R9
                 ADD R7 R9 R7
-            J endif
+                J endif
     if1:
         LOAD 1 R9 # Registro auxiliar para comprobaciones
         BNE R1 R9 if2

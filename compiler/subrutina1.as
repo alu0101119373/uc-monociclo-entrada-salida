@@ -12,15 +12,16 @@ if0:
 if1:
     LOAD 1 R10
     BNE R7 R10 if2
-    LINK 75
+    LINK 73
     J endif
 if2:
     LOAD 2 R10
     BNE R7 R10 if3
-    LINK 100
+    LINK 96
     J endif
 if3:
     LOAD 3 R10
     BNE R7 R10 endif
-    LINK 125
+    LINK 119
 endif:
+FREE

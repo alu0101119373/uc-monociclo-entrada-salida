@@ -1,4 +1,4 @@
-# Subrutina der-izq
+# Subrutina izq-der
 
 if1: # 0 0 0 1
     # IF R15 == 1
@@ -24,12 +24,10 @@ if3: # 0 1 0 0
 if4: # 1 0 0 0
     # IF R15 == 8
     LOAD 8 R10
-    BNE R15 R10 if5
+    BNE R15 R10 default
     LOAD 1 R15
     J endif
-if5: # empezar en 0 0 0 1
-    # IF R15 == 0
-    BNE R15 R0 endif
+default: # empezar en 0 0 0 1
     LOAD 1 R15
 endif:
 
