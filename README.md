@@ -17,7 +17,6 @@
 El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implementarse mejoras a la misma. En concreto, esta CPU posee las siguientes características:
 
 - Tiene una palabra de 16 bits (2 Bytes).
-- Es capaz de trabajar con un máximo de 64 microinstrucciones, de las cuales 16 son instrucciones de salto, 4 son instrucciones de carga inmediata y 8 son instrucciones de la ALU.
 
 - Posee una memoria de programa con un máximo de 1024 instrucciones. Esto implica que el programa que se desee ejecutar debe tener un máximo de 1024 instrucciones.
 
@@ -46,7 +45,7 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 ```
 
-- Se ha creado un compilador para producir subrutinas. Más detalles en [Funcionamiento del Compìlador](#compilador)
+- Se ha creado un compilador para producir subrutinas. Más detalles en [Funcionamiento del Compilador](#compilador)
 
 - El compilador ahora soporta etiquetas para facilitarnos los saltos en el programa.
 
@@ -86,7 +85,7 @@ Este comando compilará el proyecto y generará el fichero `cpu.out`. Para poder
 
 Para poner a prueba esta CPU monociclo, **el programa debe ser escrito en el fichero progfile.dat**, en binario y siguiendo el formato de palabra indicado.
 
-## Compilador<a name="compilador"></a>
+## Funcionamiento del Compilador<a name="compilador"></a>
 
 El compilador para convertir el código en ensamblador en código binario, contiene dos ejecutables: `compilador2.py` y `compilador2-subrutina.py`.
 
