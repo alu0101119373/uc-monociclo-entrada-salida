@@ -6,6 +6,7 @@
 2. [Mejoras](#mejoras)
 3. [Problemas encontrados](#problemas)
 4. [Compilación](#compilacion)
+5. [Funcionamiento del compilador](#compilador)
 5. [Formato de palabra](#formatoPalabra)
 6. [Instrucciones Implementadas](#microInstrucciones)
 7. [Ejemplo del funcionamiento de la CPU monociclo base](#funcionamientoCPU)
@@ -19,6 +20,9 @@ El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implem
 - Es capaz de trabajar con un máximo de 64 microinstrucciones, de las cuales 16 son instrucciones de salto, 4 son instrucciones de carga inmediata y 8 son instrucciones de la ALU.
 
 - Posee una memoria de programa con un máximo de 1024 instrucciones. Esto implica que el programa que se desee ejecutar debe tener un máximo de 1024 instrucciones.
+
+En este repositorio se encuentra una versión mejorada de la inicial CPU monociclo, en la que se implementa E/S, gestión de interrupciones y un timer programable.
+
 - El camino de datos de esta CPU es el siguiente:
 
 ![Camino de datos de la CPU monociclo base](./img/cdCPUModificada.png)
@@ -42,6 +46,8 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 ```
 
+- Se ha creado un compilador para producir subrutinas. Más detalles en [Funcionamiento del Compìlador](#compilador)
+
 - El compilador ahora soporta etiquetas para facilitarnos los saltos en el programa.
 
 - Añadido flag que informa a la UC de que el resultado de la última operación de la ALU ha dado un valor negativo. Con esto, también se implementa la diferenciación de operaciones aritméticas en binario puro y en complemento a dos.
@@ -58,6 +64,12 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 - La E/S me ha costado un poco entenderla e implementarla, a pesar de ser muy fácil al final. Uno de los problemas que tiene actualmente la E/S es que, si la primera instrucción del programa es una operación E/S, esta no se produce correctamente, dando pequeños problemas. Hasta ahora, para solucionarlo, tenemos que añadir una operación inútil (como ADD R0 R0 R0) para perder ese primer ciclo de reloj y así poder corregir el problema. Plateo añadir la instrucción NOP al repertorio, que no hace nada. De esta forma, podmeos perder un ciclo de reloj.
 
+- La gestión de interrupciones inicialmente me dió muchos problemas. Los saltos condicionales en primer lugar hacen una operación de la ALU para activar un flag, y en la siguiente operación comprueban dicho flag y saltan si procede. Es posible, y de hecho ha ocurrido en varios casos, que la interrupcion se active justo entre estas dos operaciones, de modo que si la subrutina que se ejecuta para reaccionar a la interrupción ejecuta una operación de la ALU este flag se podría ver alterado. El resultadoes que el al volver de la subrutina el salto haría un comportamiento inesperado.
+
+La solución fue sencillamente implementar registros auxiliares para los flags. De esta forma, al saltar a una interrupción los flags se almacenan en los registros auxiliares, y los recupera al volver de la subrutina.
+
+- Otro problema que tuve fue a la hora de volver de la subrutina de interrupción. Cuando interrumpía justo antes de que se resolviera el salto, como inicialmente guardaba en la pila el valor siguiente a la instrucción actual, el salto no se ejecutaba si esa era la intención. La solución resultó en comprobar si la instrucción de salto iba a tener éxito (mirando la señal `s_inc`) y en caso afirmativo enviar a la pila el valor de `e_pc` en lugar de `s_pc + 1`.
+
 ## Compilación<a name="compilacion"></a>
 
 Para compilar el proyecto, se debe situar la terminal en la raíz del mismo y ejecutar el siguiente comando:
@@ -73,6 +85,30 @@ El fichero `datafiles.txt` contiene una lista de los ficheros `.v` necesarios pa
 Este comando compilará el proyecto y generará el fichero `cpu.out`. Para poder ejecutar el fichero y ver el resultado con GTKWave, hacemos uso del comando `vvp cpu.out`. Esto generará el fichero `cpu_tb.vcd` el cual podemos utilizar para ver la ejecución de la CPU en GTKWave con el comando `gtkwave cpu_tb.vcd`.
 
 Para poner a prueba esta CPU monociclo, **el programa debe ser escrito en el fichero progfile.dat**, en binario y siguiendo el formato de palabra indicado.
+
+## Compilador<a name="compilador"></a>
+
+El compilador para convertir el código en ensamblador en código binario, contiene dos ejecutables: `compilador2.py` y `compilador2-subrutina.py`.
+
+El primero nos permite compilar el programa principal añadiendo, si existen, las 4 subrutinas del gestor de interrupciones (o llenar de 0 en caso contrario). Los ficheros que revisa el compilador para incluir las subrutinas son `subrutina1.as`, `subrutina2.as`, `subrutina3.as` y `subrutina4.as`. Estos ficheros deben ser colocados en el mismo directorio que el compilador. Si alguno de esos ficheros no los encuentra (por ejemplo, no queremos implementar una subrutina para la línea de interrupción 2 y por tanto no creamos el fichero) el programa lo sustituye con 0's.
+
+El segundo programa nos permite compilar subrutinas, que se tratan de forma especial. Tenemos varios tipos de subrutinas.
+
+```bash
+
+	$ ./compilador2-subrutina.py [1/2/3/4] <fichero.as> <fichero.dat>
+
+```
+
+Esta forma nos permite crear una de las 4 subrutinas de las líneas de interrupción. El contenido que genere este programa (que se incluye en fichero.dat) si el fichero tiene el nombre adecuado se incluirá en la posición que le corresponda del fichero `progfile.dat` cuando se compile el programa principal.
+
+```bash
+
+	$ ./compilador2-subrutina.py 0 <fichero.as> <fichero.dat> <posicion_en_memoria>
+
+```
+
+Esta opción crea una subrutina (función) que comienza en la línea de código especificada en la opción `<posicion_en_memoria>`. El código generado por el compilador de subrutinas se debe colocar a mano en la posición de memoria deseada, en el fichero `progfile.dat`.
 
 ## Formato de instruccion<a name="formatoPalabra"></a>
 
@@ -131,8 +167,8 @@ Las instrucciones implementadas actualmente se representan en la siguiente tabla
 | **JZ**           | 110001 | Salto si el flag de 0 está activo                                                       |
 | **JNZ**          | 110010 | Salto si el flag de 0 **no** está activo                                                |
 | **JN**           | 110011 | Salto si el flag de negativo está activo                                                |
-| **PUSH**         | 110100 | Envía el valor siguiente de PC a la pila                                                |
-| **POP**          | 110101 | Recupera el último dato ingresado y lo pone en PC                                       |
+| **LINK**         | 110100 | Envía el valor siguiente de PC a la pila y salta a la dirección especificada            |
+| **RETURN**       | 110101 | Recupera el último dato ingresado y lo pone en PC                                       |
 | **SKZ**          | 110110 | Se salta la siguiente instrucción del programa si el flag de Z está activo              |
 | **SKNZ**         | 110111 | Se salta la siguiente instrucción del programa si el flag de Z **no** está activo       |
 | **FREE**         | 111000 | Instruccion para terminar una interrupción                                              |
@@ -168,10 +204,8 @@ Para utilizar estas instrucciones se debe hacer uso del compilador proporcionado
 | **BLE** R1 R2 DIR  | **SUB** R1 R2 R0, **JN** DIR, **JZ** DIR | Si el valor en R1 es menor **o igual** que R2, salta a la dirección DIR |
 | **BGT** R1 R2 DIR  | **SUB** R2 R1 R0, **JN** DIR             | Si el valor en R1 es mayor que R2, salta a la dirección DIR             |
 | **BGE** R1 R2 DIR  | **SUB** R2 R1 R0, **JN** DIR, **JZ** DIR | Si el valor en R1 es mayor **o igual** que R2, salta a la direcicón DIR |
-| **GOTO** DIR	     | **PUSH**, **J** DIR			| Salta a una subrutina, en la dirección DIR                              |
-| **RETURN**         | **POP**                                  | Vuelve de la subrutina para retomar la ejecución                        |
 
-Como se puede observar, el repertorio de instrucciones de salto y de carga inmediata puede ser ampliado.
+Como se puede observar, el repertorio de instrucciones de salto y de E/S puede ser ampliado.
 
 ## Ejemplo del funcionamiento de la CPU monociclo base<a name="funcionamientoCPU"></a>
 
