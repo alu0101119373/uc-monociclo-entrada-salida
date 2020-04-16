@@ -25,7 +25,7 @@ En este repositorio se encuentra una versión mejorada de la inicial CPU monocic
 
 - El camino de datos de esta CPU es el siguiente:
 
-![Camino de datos de la CPU monociclo base](./img/cdCPUModificada.png)
+![Camino de datos de la CPU monociclo base](./img/cdCPUModificada.jpg)
 
 ## Mejoras<a name="mejoras"></a>
 
@@ -254,22 +254,36 @@ Como se puede observar en la captura de pantalla, se realiza un salto entre la i
 
 ## Ejemplo del funcionamiento de la CPU con E/S<a name="funcionamientoCPUes"></a>
 
-Este ejemplo sirve para ilustrar el correcto comportamiento de la CPU con dispositivos E/S. En este caso, se utiliza un decodificador de 7 segmentos que se encarga de traducir el dato de un registro para su correcto muestreo en el display de 7 segmentos. A continuación se ilustran los pasos que realiza el programa de prueba:
+Este ejemplo ilutra  el funcionamiento de la E/S, así como el gestor de interrupciones y el timer programable. En este ejemplo se pretende simular una secuencia de encendido y apagado con leds, conectados al puerto 0 de salida. En el puerto 2 y 3 de entrada se dispone de dos botones; uno para acelerar el tiempo entre un paso y otro de la secuencia y otro para desacelerar el tiempo. Asimismo, se dispone de 4 tipos de secuencias. A saber:
+
+- Secuencia 1: Recorrido de derecha a izquierda.
+- Secuencia 2: Recorrido de izquierda a derecha.
+- Secuencia 3: Acumulación de derecha a izquierda.
+- Secuencia 4: Parpadeo de los leds.
+
+Para cambiar de secuencia se dispone de un botón adicional conectado al puerto 0 de entrada.
+
+Un timer programable recibe a través del puerto 3 de salida el número de ciclos que debe esperar entre cada señal. La señal que produce está conectada al puerto 0 del gestor de interrupciones, de forma que cada vez que se produzca señal la secuencia avanza.
+
+Se puede observar un dibujo de cómo está conectado el sistema a la CPU en la siguiente imagen:
+
+![Dibujo conexiones CPU](./img/conexion_cpu.jpg)
 
 ### Descripción del funcionamiento del programa
-- Se carga en el registro R1 el valor recibido por el puerto 0 de entrada.
-- Se carga en el registro R2 el valor recibido por el puerto 1 de entrada.
-- Se suman los valores de los registros R1 y R2 y se guarda en R3.
-- El valor contenido en R3 se envía al puerto 0 de salida.
+El programa principal se encarga sencillamente de monitorizar los botones, de tal forma que cuando se pulsen se realicen los cambios necesarios para que la acción solicitada tenga lugar. Este programa guarda en dos registros el número máximo y mínimo de ciclos que usará el timer. De esta forma se acota la velocidad a la que el timer realiza la secuencia.
 
-Por tanto, el valor en el puerto 0 es cargado por el decodificador de 7 segmentos y traducido para el display 1, que en el programa de ejemplo (disponible en progfile.dat) mostraría lo equivalente a un 5.
+El software de gestión de la línea de interrupción 0 es el encargado de avanzar la secuencia de los leds. El software en primer lugar determina qué tipo de secuencia se está ejecutando, y ejecuta una subrutina que contiene el recorrido específico de esa secuencia.
 
-**NOTA**: Para las pruebas se puede variar los valores dispuestos en los puertos 0 y 1 de entrada, pero la suma de ambos no debe superar el 9.
+### Descripción del test realizado
+Para comprobar que tanto el software como el hardware funcionan correctamente, se ha diseñado un testbench que realiza las siguientes acciones:
 
-### Código en ensamblador y su equivalencia en binario
- y traducido para el display 1, que en el programa de ejemplo (disponible en progfile.dat) mostraría lo equivalente a un 5.
+El límite de la velocidad indicado por software es entre 50 y 250.
 
-**NOTA**: Para las pruebas se puede variar los valores dispuestos en los puertos 0 y 1 de entrada, pero la suma de ambos no debe superar el 9.
+- Se incrementa la velocidad del timer de 50 ciclos a 100 ciclos por señal.
+- Tras un tiempo, la velocidad baja de 100 a 50 ciclos.
+- Vuelve a disminuir la velocidad, pero como ya a alcanzado el límite, la velocidad permanece valiendo 50.
 
-### Código en ensamblador y su equivalencia en binario
+Al mismo tiempo, cada 75 ciclos el programa va cambiando de fase, observándose los cambios en el GTKWave.
+
+![Funcionamiento del programa con GTKWave](./img/gtkwaveES.jpg)
 ---
