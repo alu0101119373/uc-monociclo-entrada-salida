@@ -269,18 +269,22 @@ Se puede observar un dibujo de cómo está conectado el sistema a la CPU en la s
 ![Dibujo conexiones CPU](./img/conexion_cpu.jpg)
 
 ### Descripción del funcionamiento del programa
-El programa principal se encarga sencillamente de monitorizar los botones, de tal forma que cuando se pulsen se realicen los cambios necesarios para que la acción solicitada tenga lugar. Este programa guarda en dos registros el número máximo y mínimo de ciclos que usará el timer. De esta forma se acota la velocidad a la que el timer realiza la secuencia.
+El programa principal se encarga sencillamente de monitorizar los botones, de tal forma que cuando se pulsen se realicen los cambios necesarios para que la acción solicitada tenga lugar. Dos de estos botones son los encargados de incrementar y decrementar la velocidad de las secuencias, mientras que un tercer botón se ocupa de cambiar de entre secuencias. Este programa guarda en dos registros el número máximo y mínimo de ciclos que usará el timer. De esta forma se acota la velocidad a la que el timer realiza la secuencia.
 
-El software de gestión de la línea de interrupción 0 es el encargado de avanzar la secuencia de los leds. El software en primer lugar determina qué tipo de secuencia se está ejecutando, y ejecuta una subrutina que contiene el recorrido específico de esa secuencia.
+El software de gestión de la línea de interrupción 0 es el encargado de avanzar la secuencia de los leds. El software en primer lugar determina qué tipo de secuencia se está ejecutando, y luego ejecuta una subrutina que contiene el recorrido específico de esa secuencia.
 
 ### Simulación del test de velocidad
 Para comprobar que tanto el software como el hardware funcionan correctamente, se ha diseñado un testbench que realiza las siguientes acciones:
 
 El límite de la velocidad indicado por software es entre 50 y 250.
 
-- Se incrementa la velocidad del timer de 50 ciclos a 100 ciclos por señal.
-- Tras un tiempo, la velocidad baja de 100 a 50 ciclos.
-- Vuelve a disminuir la velocidad, pero como ya a alcanzado el límite, la velocidad permanece valiendo 50.
+Para testear la velocidad del software, hemos hechos dos pruebas. En la primera prueba, hemos 'pulsado' el botón de incremento dos veces, pasando en el primer caso de 50 a 100 y en el segundo de 100 a 150.
+
+![Primera prueba del test de velocidad](./img/velinc.png)
+
+En la segunda prueba, incrementamos de 50 a 100 pulsado el botón correspondiente, y volvimos a decrementar de 100 a 50 pulsando el botón de decremento.
+
+![Segunda prueba del test de velocidad](./img/veldec.png)
 
 ### Simulación del test de secuencias
 Para testear el comportamiento del cambio se fase, se han realizado diferentes pruebas. En las cuatro primeras imágenes, se visualiza cada una de las secuencias. En la última se observa cómo las secuencias van variando.

@@ -36,54 +36,21 @@ wire pulse = 1'b0;
 initial
 begin
   iport4 = 1'b0;
+  iport1 = 1'b0;
+
   iport3 = 1'b0;
-  // #(30*60)
-  // iport3 = 1'b1;
-  // #(30*60)
-  // iport3 = 1'b0;
-  // #(60*60)
-  // iport4 = 1'b1;
-  // #(15*60)
-  // iport4 = 1'b0;
-  // #(15*60)
-  // iport4 = 1'b1;
-  // #(15*60)
-  // iport4 = 1'b0;
-end
-
-initial
-begin
-  iport1 = 1'b0;
   #(200*60);
-
-  // Modo 1
-  iport1 = 1'b1;
-  #(40*60);
-  iport1 = 1'b0;
-
-  #(300*60);
-
-  // Modo 2
-  iport1 = 1'b1;
+  iport3 = 1'b1;
   #(40*60)
-  iport1 = 1'b0;
-
-  #(150*60)
+  iport3 = 1'b0;
   
-  // Modo 3
-  iport1 = 1'b1;
+  #(200*60)
+  iport4 = 1'b1;
   #(40*60)
-  iport1 = 1'b0;
-
-  // #(75*60)
-  
-  // // Modo 4
-  // iport1 = 1'b1;
-  // #(30*60)
-  // iport1 = 1'b0;
+  iport4 = 1'b0;
 end
 
-// Asignaciones
+// Asignaciones de los leds
 assign led1 = oport1[0];
 assign led2 = oport1[1];
 assign led3 = oport1[2];
