@@ -5,6 +5,8 @@ module cpu_tb;
 
 reg clk, reset;
 
+// Contador de ciclos de reloj
+reg [7:0] cont;
 
 // generación de reloj clk
 always //siempre activo, no hay condición de activación
@@ -13,9 +15,10 @@ begin
   #30;
   clk = 1'b0;
   #30;
+  cont = cont + 8'b1;
 end
 
-// Representacion de los 4 displays 7 seg
+// Representacion de los 4 leds
 wire led1, led2, led3, led4;
 reg [7:0] iport1, iport2, iport3, iport4;
 wire [7:0] oport1, oport2, oport3, oport4;
@@ -32,35 +35,51 @@ wire pulse = 1'b0;
 // TEST
 initial
 begin
+  iport4 = 1'b0;
   iport3 = 1'b0;
-  iport4 = 1'b0;
-  #(30*60)
-  iport3 = 1'b1;
-  #(30*60)
-  iport3 = 1'b0;
-  #(60*60)
-  iport4 = 1'b1;
-  #(15*60)
-  iport4 = 1'b0;
-  #(15*60)
-  iport4 = 1'b1;
-  #(15*60)
-  iport4 = 1'b0;
+  // #(30*60)
+  // iport3 = 1'b1;
+  // #(30*60)
+  // iport3 = 1'b0;
+  // #(60*60)
+  // iport4 = 1'b1;
+  // #(15*60)
+  // iport4 = 1'b0;
+  // #(15*60)
+  // iport4 = 1'b1;
+  // #(15*60)
+  // iport4 = 1'b0;
 end
 
 initial
 begin
+  #(10*60)
+
+  // Modo 1
   iport1 = 1'b1;
-  #(30*60)
+  #(30*60);
   iport1 = 1'b0;
-  #(30*60)
-  iport1 = 1'b1;
-  #(30*60)
-  iport1 = 1'b0;
-  #(30*60)
-  iport1 = 1'b1;
-  #(30*60)
-  iport1 = 1'b0;
+
+  #(75*60);
+
+  // // Modo 2
+  // iport1 = 1'b1;
+  // #(30*60)
+  // iport1 = 1'b0;
+
+  // #(75*60)
+  
+  // // Modo 3
+  // iport1 = 1'b1;
+  // #(30*60)
+  // iport1 = 1'b0;
+
+  // #(75*60)
+  
+  // // Modo 4
+  // iport1 = 1'b1;
+  // #(30*60)
+  // iport1 = 1'b0;
 end
 
 // Asignaciones
@@ -73,6 +92,7 @@ initial
 begin
   $dumpfile("cpu_tb.vcd");
   $dumpvars;
+  cont = 8'b0;
   reset = 1;  //a partir del flanco de subida del reset empieza el funcionamiento normal
   #10;
   reset = 0;  //bajamos el reset 
@@ -80,7 +100,7 @@ end
 
 initial
 begin
-  #(1000*60);  //Esperamos 270 ciclos o 270 instrucciones
+  #(1000*60);  //Esperamos 1000 ciclos o 1000 instrucciones
   $finish;
 end
 

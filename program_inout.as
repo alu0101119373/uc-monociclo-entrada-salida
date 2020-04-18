@@ -6,7 +6,6 @@
 # Datos iniciales
 LOAD 50 R13 # Valor inicial del timer
 LOAD 50 R14 # Valor de suma/resta para el timer
-LOAD 1 R15
 LOAD 50 R5  # Valor minimo valido para la velocidad del timer
 LOAD 250 R6 # Valor maximo valido para la velocidad del timer
 
