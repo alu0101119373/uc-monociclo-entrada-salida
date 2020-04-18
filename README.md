@@ -308,4 +308,3 @@ Esta secuencia realiza un parpadeo de los leds.
 ![Prueba con cambios](./img/secuenciaMixed.png)
 
 En esta imagen se ve cómo los recorridos cambian en función del puerto de entrada 1.
----
