@@ -9,6 +9,8 @@ module regfile(input  wire        clk,
 
   reg [7:0] regb[0:15]; //memoria de 16 registros de 8 bits de ancho
 
+  wire [7:0] reg7 = regb[7];
+
   initial
   begin
     $readmemb("regfile.dat",regb); // inicializa los registros a valores conocidos

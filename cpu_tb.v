@@ -6,7 +6,7 @@ module cpu_tb;
 reg clk, reset;
 
 // Contador de ciclos de reloj
-reg [7:0] cont;
+reg [9:0] cont;
 
 // generación de reloj clk
 always //siempre activo, no hay condición de activación
@@ -15,7 +15,7 @@ begin
   #30;
   clk = 1'b0;
   #30;
-  cont = cont + 8'b1;
+  cont = cont + 10'b1;
 end
 
 // Representacion de los 4 leds
@@ -53,26 +53,27 @@ end
 
 initial
 begin
-  #(10*60)
+  iport1 = 1'b0;
+  #(200*60);
 
   // Modo 1
   iport1 = 1'b1;
-  #(30*60);
+  #(40*60);
   iport1 = 1'b0;
 
-  #(75*60);
+  #(300*60);
 
-  // // Modo 2
-  // iport1 = 1'b1;
-  // #(30*60)
-  // iport1 = 1'b0;
+  // Modo 2
+  iport1 = 1'b1;
+  #(40*60)
+  iport1 = 1'b0;
 
-  // #(75*60)
+  #(150*60)
   
-  // // Modo 3
-  // iport1 = 1'b1;
-  // #(30*60)
-  // iport1 = 1'b0;
+  // Modo 3
+  iport1 = 1'b1;
+  #(40*60)
+  iport1 = 1'b0;
 
   // #(75*60)
   
@@ -92,7 +93,7 @@ initial
 begin
   $dumpfile("cpu_tb.vcd");
   $dumpvars;
-  cont = 8'b0;
+  cont = 10'b0;
   reset = 1;  //a partir del flanco de subida del reset empieza el funcionamiento normal
   #10;
   reset = 0;  //bajamos el reset 

@@ -273,7 +273,7 @@ El programa principal se encarga sencillamente de monitorizar los botones, de ta
 
 El software de gestión de la línea de interrupción 0 es el encargado de avanzar la secuencia de los leds. El software en primer lugar determina qué tipo de secuencia se está ejecutando, y ejecuta una subrutina que contiene el recorrido específico de esa secuencia.
 
-### Descripción del test realizado
+### Simulación del test de velocidad
 Para comprobar que tanto el software como el hardware funcionan correctamente, se ha diseñado un testbench que realiza las siguientes acciones:
 
 El límite de la velocidad indicado por software es entre 50 y 250.
@@ -282,7 +282,28 @@ El límite de la velocidad indicado por software es entre 50 y 250.
 - Tras un tiempo, la velocidad baja de 100 a 50 ciclos.
 - Vuelve a disminuir la velocidad, pero como ya a alcanzado el límite, la velocidad permanece valiendo 50.
 
-Al mismo tiempo, cada 75 ciclos el programa va cambiando de fase, observándose los cambios en el GTKWave.
+### Simulación del test de secuencias
+Para testear el comportamiento del cambio se fase, se han realizado diferentes pruebas. En las cuatro primeras imágenes, se visualiza cada una de las secuencias. En la última se observa cómo las secuencias van variando.
+
+![Secuencia 1](./img/secuencia1.png)
+
+Esta secuencia recorre de derecha a izquierda en bucle.
+
+![Secuencia 2](./img/secuencia2.png)
+
+Esta secuencia recorre de izquierda a derecha en bucle.
+
+![Secuencia 3](./img/secuencia3.png)
+
+Esta secuencia acumula los leds de derecha a izquierda, en bucle.
+
+![Secuencia 4](./img/secuencia4.png)
+
+Esta secuencia realiza un parpadeo de los leds.
+
+![Prueba con cambios](./img/secuenciaMixed.png)
+
+En esta imagen se ve cómo los recorridos cambian en función del puerto de entrada 1.
 
 ![Funcionamiento del programa con GTKWave](./img/gtkwaveES.jpg)
 ---

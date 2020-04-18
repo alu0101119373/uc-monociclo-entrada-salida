@@ -25,7 +25,7 @@ while:
     IN 3 R4 # decremento
     IN 0 R8 # tipo de recorrido
 
-    # Comprobamos los botones de incremento y decremento
+    # Comprobamos los botones de incremento, decremento y tipo de secuencia
     if0:
         LOAD 1 R9
         BNE R8 R0 if1
