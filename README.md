@@ -5,7 +5,7 @@
 1. [Objetivo](#objetivo)
 2. [Mejoras](#mejoras)
 3. [Problemas encontrados](#problemas)
-4. [Compilación](#compilacion)
+4. [Compilación del proyecto](#compilacion)
 5. [Funcionamiento del compilador](#compilador)
 5. [Formato de palabra](#formatoPalabra)
 6. [Instrucciones Implementadas](#microInstrucciones)
