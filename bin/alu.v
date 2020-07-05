@@ -22,12 +22,12 @@ begin
     3'b101: s = a | b;
     3'b110: s = -a;
     3'b111: s = -b;
-	default: s = 'bx; //desconocido en cualquier otro caso (x � z), por si se modifica el c�digo
+	default: s = 9'bx; //desconocido en cualquier otro caso (x � z), por si se modifica el c�digo
   endcase
 end
 
 wire overflow;
-assign overflow = (y < min || y > max) ? 1 : 0;
+assign overflow = (y < min || y > max) ? 1'b1 : 1'b0;
 assign carry = s[8];
 
 assign y = s[7:0];

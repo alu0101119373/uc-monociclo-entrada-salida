@@ -12,16 +12,16 @@ module gestInterrup (input wire clk, reset, iport1, iport2, iport3, iport4, fin,
     reg active; // bit que se mantiene a uno hasta que la interrupcion actual termina
 
     // Orden de prioridad: 1, 2, 3, 4
-    always @(posedge clk, reset, iport1, iport2, iport3, iport4, fin)
+    always @(reset, iport1, iport2, iport3, iport4, fin)
     begin
         if (reset)
         begin
             active <= 1'b0;
-            dirAux <= 'bx;    
+            dirAux <= 10'bx;    
         end
         else
         begin
-            if ((active & fin) == 1'b1)
+            if (active == 1'b1 && fin == 1'b1)
                 active <= 1'b0;
             else if ((active && ~fin) || ~active)
                 s_interrup <= 1'b0;
@@ -67,7 +67,7 @@ module gestInterrup (input wire clk, reset, iport1, iport2, iport3, iport4, fin,
                 active <= 1'b1;
             end
             else
-                dirAux <= 'bx;
+                dirAux <= 10'bx;
         end
     end
 

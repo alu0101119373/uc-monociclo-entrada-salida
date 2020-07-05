@@ -9,8 +9,6 @@ module regfile(input  wire        clk,
 
   reg [7:0] regb[0:15]; //memoria de 16 registros de 8 bits de ancho
 
-  wire [7:0] reg7 = regb[7];
-
   initial
   begin
     $readmemb("regfile.dat",regb); // inicializa los registros a valores conocidos
@@ -23,8 +21,8 @@ module regfile(input  wire        clk,
   always @(posedge clk)
     if (we3) regb[wa3] <= wd3;	
   
-  assign rd1 = (ra1 != 0) ? regb[ra1] : 0;
-  assign rd2 = (ra2 != 0) ? regb[ra2] : 0;
+  assign rd1 = (ra1 != 0) ? regb[ra1] : 1'b0;
+  assign rd2 = (ra2 != 0) ? regb[ra2] : 1'b0;
 
 endmodule
 
@@ -37,22 +35,13 @@ module sum #(parameter WIDTH = 10)
 
 endmodule
 
-// modulo restador
-module rest #(parameter WIDTH = 10)
-            (input  wire [WIDTH-1:0] a, b,
-             output wire [WIDTH-1:0] y);
-
-  assign y = (a == 0) ? 0 : a - b;
-
-endmodule
-
 //modulo registro para modelar el PC, cambia en cada flanco de subida de reloj o de reset
 module registro #(parameter WIDTH = 8)
               (input wire             clk, reset, enable,
                input wire [WIDTH-1:0] d, 
                output reg [WIDTH-1:0] q);
 
-  always @(posedge clk, enable, posedge reset)
+  always @(posedge clk, posedge enable, posedge reset)
     if (reset) q <= 0;
     else
     begin
