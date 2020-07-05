@@ -69,7 +69,7 @@ La solución fue sencillamente implementar registros auxiliares para los flags. 
 
 - Otro problema que tuve fue a la hora de volver de la subrutina de interrupción. Cuando interrumpía justo antes de que se resolviera el salto, como inicialmente guardaba en la pila el valor siguiente a la instrucción actual, el salto no se ejecutaba si esa era la intención. La solución resultó en comprobar si la instrucción de salto iba a tener éxito (mirando la señal `s_inc`) y en caso afirmativo enviar a la pila el valor de `e_pc` en lugar de `s_pc + 1`.
 
-## Compilación<a name="compilacion"></a>
+## Compilación del proyecto<a name="compilacion"></a>
 
 Para compilar el proyecto, se debe situar la terminal en la raíz del mismo y ejecutar el siguiente comando:
 
