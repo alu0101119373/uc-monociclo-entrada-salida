@@ -5,7 +5,7 @@
 1. [Objetivo](#objetivo)
 2. [Mejoras](#mejoras)
 3. [Problemas encontrados](#problemas)
-4. [Compilación](#compilacion)
+4. [Compilación del proyecto](#compilacion)
 5. [Funcionamiento del compilador](#compilador)
 5. [Formato de palabra](#formatoPalabra)
 6. [Instrucciones Implementadas](#microInstrucciones)
@@ -18,7 +18,7 @@ El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implem
 
 - Tiene una palabra de 16 bits (2 Bytes).
 
-- Posee una memoria de programa con un máximo de 1024 instrucciones. Esto implica que el programa que se desee ejecutar debe tener un máximo de 1024 instrucciones.
+- Posee una memoria de programa con un máximo de 1024 instrucciones.
 
 En este repositorio se encuentra una versión mejorada de la inicial CPU monociclo, en la que se implementa E/S, gestión de interrupciones y un timer programable.
 
@@ -53,9 +53,9 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 - Implementada instrucción JN, que habilita un salto a la dirección indicada si el flag de negativo está activo.
 
-- Añadida pseudo-instrucciones `GOTO` y `RETURN` para ir a una subrutina y volver de ella respectivamente. Hacen uso de la pila para su funcionamiento.
+- Añadida pseudo-instrucciones `LINK` y `RETURN` para ir a una subrutina y volver de ella respectivamente. Hacen uso de la pila para su funcionamiento.
 
-- Implementada E/S para la CPU, con dos nuevas instrucciones, `IN` y `OUT`, para la comunicación con los puertos de E/S. Solo se dispone de 4 puertos de entrada y 4 puertos de salida. Más información sobre las instrucciones en el apartado de [Instrucciones Implementadas](#microInstrucciones).
+- Implementada E/S para la CPU, con tres nuevas instrucciones, `IN`, `OUT` y `OUTI`, para la comunicación con los puertos de E/S. Solo se dispone de 4 puertos de entrada y 4 puertos de salida. Más información sobre las instrucciones en el apartado de [Instrucciones Implementadas](#microInstrucciones).
 
 - Implementado un timer que nos permite contar varios ciclos de reloj.
 
@@ -69,7 +69,7 @@ La solución fue sencillamente implementar registros auxiliares para los flags. 
 
 - Otro problema que tuve fue a la hora de volver de la subrutina de interrupción. Cuando interrumpía justo antes de que se resolviera el salto, como inicialmente guardaba en la pila el valor siguiente a la instrucción actual, el salto no se ejecutaba si esa era la intención. La solución resultó en comprobar si la instrucción de salto iba a tener éxito (mirando la señal `s_inc`) y en caso afirmativo enviar a la pila el valor de `e_pc` en lugar de `s_pc + 1`.
 
-## Compilación<a name="compilacion"></a>
+## Compilación del proyecto<a name="compilacion"></a>
 
 Para compilar el proyecto, se debe situar la terminal en la raíz del mismo y ejecutar el siguiente comando:
 
