@@ -18,7 +18,7 @@ El objetivo de esta práctica es desarrollar una CPU básica monociclo, e implem
 
 - Tiene una palabra de 16 bits (2 Bytes).
 
-- Posee una memoria de programa con un máximo de 1024 instrucciones. Esto implica que el programa que se desee ejecutar debe tener un máximo de 1024 instrucciones.
+- Posee una memoria de programa con un máximo de 1024 instrucciones.
 
 En este repositorio se encuentra una versión mejorada de la inicial CPU monociclo, en la que se implementa E/S, gestión de interrupciones y un timer programable.
 
@@ -53,9 +53,9 @@ Estas son las mejoras que se han logrado implementar en este proyecto:
 
 - Implementada instrucción JN, que habilita un salto a la dirección indicada si el flag de negativo está activo.
 
-- Añadida pseudo-instrucciones `GOTO` y `RETURN` para ir a una subrutina y volver de ella respectivamente. Hacen uso de la pila para su funcionamiento.
+- Añadida pseudo-instrucciones `LINK` y `RETURN` para ir a una subrutina y volver de ella respectivamente. Hacen uso de la pila para su funcionamiento.
 
-- Implementada E/S para la CPU, con dos nuevas instrucciones, `IN` y `OUT`, para la comunicación con los puertos de E/S. Solo se dispone de 4 puertos de entrada y 4 puertos de salida. Más información sobre las instrucciones en el apartado de [Instrucciones Implementadas](#microInstrucciones).
+- Implementada E/S para la CPU, con tres nuevas instrucciones, `IN`, `OUT` y `OUTI`, para la comunicación con los puertos de E/S. Solo se dispone de 4 puertos de entrada y 4 puertos de salida. Más información sobre las instrucciones en el apartado de [Instrucciones Implementadas](#microInstrucciones).
 
 - Implementado un timer que nos permite contar varios ciclos de reloj.
 
