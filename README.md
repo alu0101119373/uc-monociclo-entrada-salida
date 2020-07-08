@@ -316,3 +316,8 @@ En esta imagen se ve cómo los recorridos cambian en función del puerto de entr
 Para ilustrar el correcto funcionamiento de la simulación RTL se ha utilizado el testbench `cpu_fases_tb.v`. Se puede ver que funciona correctamente en la imagen a continuación:
 
 ![Simulación RTL](./img/simulacion_rtl.png)
+
+NOTA: Para poder compilar correctamente en Quartus II, tuvimos que mover los ficheros `.dat` de la carpeta raíz a la carpeta bin. Si se quiere compilar y ejecutar con GTKWave, los ficheros `.dat` deben estar en el directorio raíz.
+
+### Gate Level Simulation
+Se ha intentado de muchas maneras realizar el Gate Level Simulation en Quartus II, pero sale un error de 'Error loading design'.
