@@ -11,6 +11,7 @@
 6. [Instrucciones Implementadas](#microInstrucciones)
 7. [Ejemplo del funcionamiento de la CPU monociclo base](#funcionamientoCPU)
 8. [Ejemplo del funcionamiento de la CPU con E/S](#funcionamientoCPUes)
+9. [Simulación RTL y Gate Level Simulation](#rtlGTS)
 
 ## Objetivo<a name="objetivo"></a>
 
@@ -308,3 +309,10 @@ Esta secuencia realiza un parpadeo de los leds.
 ![Prueba con cambios](./img/secuenciaMixed.png)
 
 En esta imagen se ve cómo los recorridos cambian en función del puerto de entrada 1.
+
+## Simulación RTL y Gate Level Simulation <a name="rtlGTS"></a>
+
+### Simulación RTL
+Para ilustrar el correcto funcionamiento de la simulación RTL se ha utilizado el testbench `cpu_fases_tb.v`. Se puede ver que funciona correctamente en la imagen a continuación:
+
+![Simulación RTL](./img/simulacion_rtl.png)

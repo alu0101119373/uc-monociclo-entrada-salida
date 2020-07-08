@@ -37,18 +37,18 @@ initial
 begin
   iport4 = 1'b0;
   iport3 = 1'b0;
-  // #(30*60)
-  // iport3 = 1'b1;
-  // #(30*60)
-  // iport3 = 1'b0;
-  // #(60*60)
-  // iport4 = 1'b1;
-  // #(15*60)
-  // iport4 = 1'b0;
-  // #(15*60)
-  // iport4 = 1'b1;
-  // #(15*60)
-  // iport4 = 1'b0;
+  #(30*60)
+  iport3 = 1'b1;
+  #(30*60)
+  iport3 = 1'b0;
+  #(60*60)
+  iport4 = 1'b1;
+  #(15*60)
+  iport4 = 1'b0;
+  #(15*60)
+  iport4 = 1'b1;
+  #(15*60)
+  iport4 = 1'b0;
 end
 
 initial
